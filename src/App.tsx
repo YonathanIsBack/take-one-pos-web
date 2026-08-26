@@ -12,7 +12,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/item" element={<ItemPage />} />
           <Route path="/item/:id" element={<ItemDetailPage />} />
-          <Route path="/item/:id/edit" element={<ItemEditPage />} />
+          <Route path="/item/:id/form" element={<ItemEditPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="*" element={<Navigate to="/item" replace />} />
         </Route>
