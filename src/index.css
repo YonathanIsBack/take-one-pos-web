@@ -1,0 +1,13 @@
+:root {
+  /* Brand Colors */
+  --color-primary: #3c2415;
+  --color-primary-hover: #4a2e1b;
+  --color-secondary: #cbb193;
+  --color-neutral-muted: #e8d8c5;
+  --color-bg-warm: #fbf7f2;
+  --color-white: #ffffff;
+
+  /* Typography */
+  --font-heading: 'Serif', 'Georgia', serif;
+  --font-body: 'Sans-Serif', 'Inter', system-ui;
+}
