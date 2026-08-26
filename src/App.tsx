@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './commons/Layout'
-import ItemPage from './pages/ItemPage'
-import ItemDetailPage from './pages/ItemDetailPage'
-import ItemEditPage from './pages/ItemEditPage'
+import ItemPage from './pages/item/ItemPage'
+import ItemDetailPage from './pages/item/ItemDetailPage'
+import ItemEditPage from './pages/item/ItemEditPage'
 import UserPage from './pages/UserPage'
 
 function App() {
