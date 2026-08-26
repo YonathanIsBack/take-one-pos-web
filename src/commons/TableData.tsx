@@ -1,13 +1,4 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from '@mui/material'
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Column } from '../constants/Type'
 import TableRowAction from './TableRowAction'
@@ -88,30 +79,38 @@ function TableData<T extends Record<string, unknown>>({
 
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-      <TableContainer sx={{ flex: 1, display: 'flex' }}>
-        <Table sx={{ flex: 1 }}>
-          <TableHead>
-            <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.columName}
-                  align="center"
-                  sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody sx={{ overflow: 'auto' }}>
-            {data.map((item) => (
-              <TableRow key={String(item[dataKey])}>
-                {columns.map((column) => renderCell(column, item))}
+      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+        <TableContainer sx={{ flex: '0 0 auto' }}>
+          <Table>
+            <TableHead>
+              <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.columName}
+                    align="center"
+                    sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+          </Table>
+        </TableContainer>
+        <Box sx={{ flex: 1, overflow: 'auto' }}>
+          <TableContainer>
+            <Table>
+              <TableBody>
+                {data.map((item) => (
+                  <TableRow key={String(item[dataKey])}>
+                    {columns.map((column) => renderCell(column, item))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
     </Box>
   )
 }
