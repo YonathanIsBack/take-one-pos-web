@@ -1,77 +1,32 @@
-import { useEffect, useState } from 'react'
+import { Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import { API_ITEM } from '../constants/Url'
-import { Item } from '../constants/Type'
+import TableData from '../commons/TableData'
 import Title from '../commons/Title'
+import { Item } from '../constants/Type'
+import { API_ITEM } from '../constants/Url'
+import ItemColumn from '../table-columns/ItemColumns'
 
 function ItemPage() {
-  const [items, setItems] = useState<Item[]>([])
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    fetch(API_ITEM)
-      .then((response) => response.json())
-      .then((data) => {
-        setItems(data.items)
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.error('Failed to fetch items:', error)
-        setLoading(false)
-      })
-  }, [])
-
-  const handleDetail = (id: number) => {
-    navigate(`/item/${id}`)
+  const handleDetail = (item: Item) => {
+    navigate(`/item/${item.id}`)
   }
 
-  const handleEdit = (id: number) => {
-    navigate(`/item/${id}?action=EDIT`)
+  const handleEdit = (item: Item) => {
+    navigate(`/item/${item.id}?action=EDIT`)
   }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Item Management" />
-      <Box sx={{ flex: 1, overflow: 'auto' }}>
-        {loading ? (
-          <Typography>Loading...</Typography>
-        ) : (
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Created At</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{new Date(item.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell align="right">
-                      <Button
-                        variant="contained"
-                        size="small"
-                        onClick={() => handleDetail(item.id)}
-                        sx={{ mr: 1 }}
-                      >
-                        Detail
-                      </Button>
-                      <Button variant="outlined" size="small" onClick={() => handleEdit(item.id)}>
-                        Edit
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-      </Box>
+      <TableData<Item>
+        url={API_ITEM}
+        columns={ItemColumn}
+        onDetail={handleDetail}
+        onEdit={handleEdit}
+        dataKey="id"
+      />
     </Box>
   )
 }
