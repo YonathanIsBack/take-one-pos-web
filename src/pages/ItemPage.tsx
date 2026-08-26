@@ -1,5 +1,6 @@
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add'
 import TableData from '../commons/TableData'
 import Title from '../commons/Title'
 import { Item } from '../constants/Type'
@@ -17,9 +18,18 @@ function ItemPage() {
     navigate(`/item/${item.id}?action=EDIT`)
   }
 
+  const handleNewItem = () => {
+    navigate('/item/form')
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Item Management" />
+      <Box sx={{ px: 3, py: 2 }}>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={handleNewItem} sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}>
+          New Item
+        </Button>
+      </Box>
       <TableData<Item>
         url={API_ITEM}
         columns={ItemColumn}
