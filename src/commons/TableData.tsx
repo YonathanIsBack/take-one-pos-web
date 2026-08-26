@@ -87,22 +87,23 @@ function TableData<T extends Record<string, unknown>>({
   }
 
   return (
-    <Box sx={{ flex: 1, overflow: 'auto' }}>
-      <TableContainer>
-        <Table>
+    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <TableContainer sx={{ flex: 1, display: 'flex' }}>
+        <Table sx={{ flex: 1 }}>
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
               {columns.map((column) => (
                 <TableCell
                   key={column.columName}
-                  align={column.alignment?.toLowerCase() as 'left' | 'right' | 'center'}
+                  align="center"
+                  sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
                 >
                   {column.label}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={{ overflow: 'auto' }}>
             {data.map((item) => (
               <TableRow key={String(item[dataKey])}>
                 {columns.map((column) => renderCell(column, item))}
