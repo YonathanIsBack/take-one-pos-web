@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { Box, Typography } from '@mui/material'
-import Title from '../commons/Title'
+import Title from '../../commons/Title'
 
 function ItemDetailPage() {
   const { id } = useParams<{ id: string }>()
