@@ -79,37 +79,35 @@ function TableData<T extends Record<string, unknown>>({
 
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
-        <TableContainer sx={{ flex: '0 0 auto' }}>
+      <TableContainer sx={{ flex: '0 0 auto' }}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.columName}
+                  align="center"
+                  sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+        </Table>
+      </TableContainer>
+      <Box sx={{ flex: 1, overflow: 'auto' }}>
+        <TableContainer>
           <Table>
-            <TableHead>
-              <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.columName}
-                    align="center"
-                    sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow key={String(item[dataKey])}>
+                  {columns.map((column) => renderCell(column, item))}
+                </TableRow>
+              ))}
+            </TableBody>
           </Table>
         </TableContainer>
-        <Box sx={{ flex: 1, overflow: 'auto' }}>
-          <TableContainer>
-            <Table>
-              <TableBody>
-                {data.map((item) => (
-                  <TableRow key={String(item[dataKey])}>
-                    {columns.map((column) => renderCell(column, item))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
       </Box>
     </Box>
   )
