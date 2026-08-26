@@ -8,6 +8,7 @@
 ## Coding Patterns
 - Use **TypeScript** with explicit return types.
 - Use function to define component
+- Web page must be responsive and capable of progressive web app
 
 ## Rules (DOs and DON'Ts)
 - **DO** write clean.

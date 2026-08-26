@@ -11,3 +11,14 @@
   --font-heading: 'Serif', 'Georgia', serif;
   --font-body: 'Sans-Serif', 'Inter', system-ui;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg-warm);
+}
