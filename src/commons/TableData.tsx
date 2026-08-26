@@ -9,23 +9,10 @@ import {
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { Column } from '../constants/Type'
 import TableRowAction from './TableRowAction'
 import TableRowDate from './TableRowDate'
 import TableRowText from './TableRowText'
-
-interface ColumnOption {
-  detail?: boolean
-  edit?: boolean
-  delete?: boolean
-}
-
-interface Column {
-  columName: string
-  columnType: 'TEXT' | 'DATE' | 'ACTION'
-  label: string
-  alignment?: 'Left' | 'Right' | 'Center'
-  option?: ColumnOption
-}
 
 interface TableDataProps<T> {
   url: string

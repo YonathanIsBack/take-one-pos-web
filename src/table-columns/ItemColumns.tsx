@@ -1,4 +1,6 @@
-const ItemColumn = [
+import { Column } from '../constants/Type'
+
+const ItemColumn: Column[] = [
   {
     columName: 'name',
     columnType: 'TEXT',
@@ -15,12 +17,12 @@ const ItemColumn = [
     columName: 'action',
     columnType: 'ACTION',
     label: 'Action',
-    alignment: 'right',
+    alignment: 'Right',
     option: {
-        detail: true,
-        edit: true,
-        delete: true
-    }
+      detail: true,
+      edit: true,
+      delete: true,
+    },
   },
 ]
 
