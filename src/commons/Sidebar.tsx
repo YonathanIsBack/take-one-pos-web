@@ -10,7 +10,7 @@ const menuItems = [
 
 function Sidebar() {
   return (
-    <Box sx={{ width: '25%', height: '100vh', bgcolor: 'var(--color-primary)', color: 'var(--color-white)' }}>
+    <Box sx={{ width: '20%', height: '100vh', bgcolor: 'var(--color-primary)', color: 'var(--color-white)' }}>
       <Toolbar />
       <List>
         {menuItems.map((item) => (

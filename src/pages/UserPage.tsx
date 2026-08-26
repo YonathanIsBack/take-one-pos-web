@@ -1,8 +1,14 @@
+import { Box, Typography } from '@mui/material'
+import Title from '../commons/Title'
+
 function UserPage() {
   return (
-    <div>
-      <h1>User Management</h1>
-    </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Title titleText="User Management" />
+      <Box sx={{ flex: 1, overflow: 'auto' }}>
+        <Typography>Content goes here</Typography>
+      </Box>
+    </Box>
   )
 }
 

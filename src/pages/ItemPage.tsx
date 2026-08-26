@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { API_ITEM } from '../constants/Url'
 import { Item } from '../constants/Type'
+import Title from '../commons/Title'
 
 function ItemPage() {
   const [items, setItems] = useState<Item[]>([])
@@ -30,51 +31,47 @@ function ItemPage() {
     navigate(`/item/${id}?action=EDIT`)
   }
 
-  if (loading) {
-    return <Typography>Loading...</Typography>
-  }
-
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Item Management
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell align="right">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{new Date(item.createdAt).toLocaleDateString()}</TableCell>
-                <TableCell align="right">
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => handleDetail(item.id)}
-                    sx={{ mr: 1 }}
-                  >
-                    Detail
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => handleEdit(item.id)}
-                  >
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Title titleText="Item Management" />
+      <Box sx={{ flex: 1, overflow: 'auto' }}>
+        {loading ? (
+          <Typography>Loading...</Typography>
+        ) : (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Created At</TableCell>
+                  <TableCell align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {items.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{new Date(item.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell align="right">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => handleDetail(item.id)}
+                        sx={{ mr: 1 }}
+                      >
+                        Detail
+                      </Button>
+                      <Button variant="outlined" size="small" onClick={() => handleEdit(item.id)}>
+                        Edit
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Box>
     </Box>
   )
 }

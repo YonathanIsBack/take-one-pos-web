@@ -1,4 +1,6 @@
 import { useParams, useSearchParams } from 'react-router-dom'
+import { Box, Typography } from '@mui/material'
+import Title from '../commons/Title'
 
 function ItemEditPage() {
   const { id } = useParams<{ id: string }>()
@@ -6,11 +8,13 @@ function ItemEditPage() {
   const action = searchParams.get('action')
 
   return (
-    <div>
-      <h1>Item Edit</h1>
-      <p>Item ID: {id}</p>
-      <p>Action: {action}</p>
-    </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Title titleText="Item Edit" />
+      <Box sx={{ flex: 1, overflow: 'auto' }}>
+        <Typography>Item ID: {id}</Typography>
+        <Typography>Action: {action}</Typography>
+      </Box>
+    </Box>
   )
 }
 
