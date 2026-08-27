@@ -12,8 +12,10 @@ import {
 import { useEffect, useState } from 'react';
 import { Column } from '../constants/Type';
 import TableRowAction from './TableRowAction';
+import TableRowCurrency from './TableRowCurrency';
 import TableRowDate from './TableRowDate';
 import TableRowText from './TableRowText';
+import ColumnType from '../constants/ColumnType';
 
 interface TableDataProps<T> {
   url: string;
@@ -72,11 +74,11 @@ function TableData<T extends Record<string, unknown>>({
     const alignment = column.alignment?.toLowerCase() as 'left' | 'right' | 'center';
 
     switch (column.columnType) {
-      case 'TEXT':
+      case ColumnType.TEXT:
         return <TableRowText value={String(value ?? '')} alignment={alignment} />;
-      case 'DATE':
+      case ColumnType.DATE:
         return <TableRowDate value={String(value ?? '')} alignment={alignment} />;
-      case 'ACTION':
+      case ColumnType.ACTION:
         return (
           <TableRowAction
             detail={column.option?.detail}
@@ -88,6 +90,8 @@ function TableData<T extends Record<string, unknown>>({
             alignment={alignment}
           />
         );
+      case ColumnType.CURRENCY:
+        return <TableRowCurrency value={value as string | number} />;
       default:
         return <TableCell align={alignment}>{String(value ?? '')}</TableCell>;
     }

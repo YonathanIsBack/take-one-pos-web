@@ -1,27 +1,28 @@
+import ColumnType from '../constants/ColumnType';
 import { Column } from '../constants/Type';
 
 const PriceHistoryColumn: Column[] = [
   {
     columName: 'cogs',
-    columnType: 'TEXT',
+    columnType: ColumnType.CURRENCY,
     label: 'COGS',
     alignment: 'Right',
   },
   {
     columName: 'selling_price',
-    columnType: 'TEXT',
+    columnType: ColumnType.CURRENCY,
     label: 'Selling Price',
     alignment: 'Right',
   },
   {
     columName: 'valid_from',
-    columnType: 'DATE',
+    columnType: ColumnType.DATE,
     label: 'Valid From',
     alignment: 'Left',
   },
   {
     columName: 'valid_to',
-    columnType: 'DATE',
+    columnType: ColumnType.DATE,
     label: 'Valid To',
     alignment: 'Left',
   },

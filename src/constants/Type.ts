@@ -14,7 +14,7 @@ export interface ColumnOption {
 
 export interface Column {
   columName: string;
-  columnType: 'TEXT' | 'DATE' | 'ACTION';
+  columnType: string;
   label: string;
   alignment?: 'Left' | 'Right' | 'Center';
   option?: ColumnOption;

@@ -1,21 +1,22 @@
+import ColumnType from '../constants/ColumnType';
 import { Column } from '../constants/Type';
 
 const ItemColumn: Column[] = [
   {
     columName: 'name',
-    columnType: 'TEXT',
+    columnType: ColumnType.TEXT,
     label: 'Name',
     alignment: 'Left',
   },
   {
     columName: 'created_at',
-    columnType: 'DATE',
+    columnType: ColumnType.DATE,
     label: 'Created At',
     alignment: 'Left',
   },
   {
     columName: 'action',
-    columnType: 'ACTION',
+    columnType: ColumnType.ACTION,
     label: 'Action',
     alignment: 'Right',
     option: {
