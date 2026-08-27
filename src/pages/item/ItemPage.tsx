@@ -15,11 +15,11 @@ function ItemPage() {
   };
 
   const handleEdit = (item: Item) => {
-    navigate(`/item/${item.id}?action=EDIT`);
+    navigate(`/item/${item.id}/edit`);
   };
 
   const handleNewItem = () => {
-    navigate('/item/form');
+    navigate('/item/new');
   };
 
   return (
