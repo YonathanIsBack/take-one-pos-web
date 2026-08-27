@@ -1,6 +1,19 @@
-import { Box, Skeleton, Tab, Tabs, Typography } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Skeleton,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
@@ -30,6 +43,15 @@ function ItemDetailPage() {
   const [item, setItem] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [tabValue, setTabValue] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+  const [priceHistoryForm, setPriceHistoryForm] = useState({
+    cogs: '',
+    sellingPrice: '',
+    validFrom: null as dayjs.Dayjs | null,
+    validTo: null as dayjs.Dayjs | null,
+  });
 
   useEffect(() => {
     fetch(`${BASE_API_URL}/items/${id}`)
@@ -46,6 +68,40 @@ function ItemDetailPage() {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPriceHistoryForm({ ...priceHistoryForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      const response = await fetch(`${BASE_API_URL}/items/${id}/price/history`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cogs: priceHistoryForm.cogs,
+          sellingPrice: priceHistoryForm.sellingPrice,
+          validFrom: priceHistoryForm.validFrom?.toISOString(),
+          validTo: priceHistoryForm.validTo?.toISOString(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+        return;
+      }
+
+      setShowForm(false);
+      setPriceHistoryForm({ cogs: '', sellingPrice: '', validFrom: null, validTo: null });
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -93,14 +149,113 @@ function ItemDetailPage() {
 
       <Box sx={{ flex: 1, overflow: 'auto', p: 3 }}>
         {tabValue === 0 && (
-          <TableData<PriceHistory>
-            url={`${BASE_API_URL}/items/${id}/price/history`}
-            columns={PriceHistoryColumn}
-            dataKey="id"
-            responseKey="price_history"
-          />
+          <>
+            {!showForm && (
+              <Box sx={{ mb: 2 }}>
+                <Button
+                  variant="contained"
+                  startIcon={<SaveIcon />}
+                  onClick={() => setShowForm(true)}
+                  sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+                >
+                  New Data
+                </Button>
+              </Box>
+            )}
+
+            {showForm ? (
+              <Box sx={{ position: 'relative' }}>
+                {submitting && (
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      bgcolor: 'rgba(255, 255, 255, 0.7)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      zIndex: 10,
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
+                )}
+                <TextField
+                  fullWidth
+                  label="Cogs"
+                  name="cogs"
+                  value={priceHistoryForm.cogs}
+                  onChange={handleFormChange}
+                  disabled={submitting}
+                  sx={{ mb: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  label="Selling Price"
+                  name="sellingPrice"
+                  value={priceHistoryForm.sellingPrice}
+                  onChange={handleFormChange}
+                  disabled={submitting}
+                  sx={{ mb: 2 }}
+                />
+                <DatePicker
+                  label="Valid From"
+                  value={priceHistoryForm.validFrom}
+                  onChange={(newValue) =>
+                    setPriceHistoryForm({ ...priceHistoryForm, validFrom: newValue })
+                  }
+                  disabled={submitting}
+                  sx={{ mb: 2, width: '100%' }}
+                />
+                <DatePicker
+                  label="Valid To"
+                  value={priceHistoryForm.validTo}
+                  onChange={(newValue) =>
+                    setPriceHistoryForm({ ...priceHistoryForm, validTo: newValue })
+                  }
+                  disabled={submitting}
+                  sx={{ mb: 2, width: '100%' }}
+                />
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<SaveIcon />}
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setShowForm(false)}
+                    disabled={submitting}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </Box>
+            ) : (
+              <TableData<PriceHistory>
+                url={`${BASE_API_URL}/items/${id}/price/history`}
+                columns={PriceHistoryColumn}
+                dataKey="id"
+                responseKey="price_history"
+              />
+            )}
+          </>
         )}
       </Box>
+
+      <DialogModal
+        open={errorModal.open}
+        onClose={() => setErrorModal({ open: false, message: '' })}
+        title="Error"
+        message={errorModal.message}
+      />
     </Box>
   );
 }
