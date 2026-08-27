@@ -1,18 +1,8 @@
 import SaveIcon from '@mui/icons-material/Save';
-import CloseIcon from '@mui/icons-material/Close';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, CircularProgress, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
 import { API_ITEM } from '../../constants/Url';
 
@@ -92,20 +82,12 @@ function ItemFormPage() {
         </Button>
       </Box>
 
-      <Dialog open={errorModal.open} onClose={() => setErrorModal({ open: false, message: '' })}>
-        <DialogTitle>
-          Error
-          <IconButton
-            onClick={() => setErrorModal({ open: false, message: '' })}
-            sx={{ position: 'absolute', right: 8, top: 8 }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <Typography>{errorModal.message}</Typography>
-        </DialogContent>
-      </Dialog>
+      <DialogModal
+        open={errorModal.open}
+        onClose={() => setErrorModal({ open: false, message: '' })}
+        title="Error"
+        message={errorModal.message}
+      />
     </Box>
   );
 }

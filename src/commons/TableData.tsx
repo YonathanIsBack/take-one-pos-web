@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -21,6 +22,7 @@ interface TableDataProps<T> {
   onEdit?: (item: T) => void;
   onDelete?: (item: T) => void;
   dataKey: keyof T;
+  disabled?: boolean;
 }
 
 function convertToCamelCase(str: string): string {
@@ -34,6 +36,7 @@ function TableData<T extends Record<string, unknown>>({
   onEdit,
   onDelete,
   dataKey,
+  disabled,
 }: TableDataProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,7 +90,25 @@ function TableData<T extends Record<string, unknown>>({
   };
 
   return (
-    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
+      {disabled && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgcolor: 'rgba(255, 255, 255, 0.7)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 10,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
       <TableContainer sx={{ flex: '0 0 auto' }}>
         <Table>
           <TableHead>

@@ -1,6 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Button } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import { Item } from '../../constants/Type';
@@ -9,6 +11,9 @@ import ItemColumn from '../../table-columns/ItemColumns';
 
 function ItemPage() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [successModal, setSuccessModal] = useState({ open: false, message: '' });
+  const [errorModal, setErrorModal] = useState({ open: false, message: '' });
 
   const handleDetail = (item: Item) => {
     navigate(`/item/${item.id}`);
@@ -19,7 +24,29 @@ function ItemPage() {
   };
 
   const handleNewItem = () => {
-    navigate('/item/new');
+    navigate('/item/form');
+  };
+
+  const handleDelete = async (item: Item) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_ITEM}/${item.id}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+        return;
+      }
+
+      setSuccessModal({ open: true, message: data.message });
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +67,23 @@ function ItemPage() {
         columns={ItemColumn}
         onDetail={handleDetail}
         onEdit={handleEdit}
+        onDelete={handleDelete}
         dataKey="id"
+        disabled={loading}
+      />
+
+      <DialogModal
+        open={successModal.open}
+        onClose={() => setSuccessModal({ open: false, message: '' })}
+        title="Success"
+        message={successModal.message}
+      />
+
+      <DialogModal
+        open={errorModal.open}
+        onClose={() => setErrorModal({ open: false, message: '' })}
+        title="Error"
+        message={errorModal.message}
       />
     </Box>
   );
