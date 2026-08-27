@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
+import RoutePath from '../../constants/RoutePath';
 import { API_ITEM, BASE_API_URL } from '../../constants/Url';
 
 function ItemEditPage() {
@@ -18,7 +19,7 @@ function ItemEditPage() {
     fetch(`${BASE_API_URL}/items/${id}`)
       .then((response) => {
         if (response.status === 404) {
-          navigate('/item');
+          navigate(RoutePath.ITEM);
           return null;
         }
         return response.json();
@@ -30,7 +31,7 @@ function ItemEditPage() {
         }
       })
       .catch(() => {
-        navigate('/item');
+        navigate(RoutePath.ITEM);
       });
   }, [id, navigate]);
 
@@ -54,7 +55,7 @@ function ItemEditPage() {
         return;
       }
 
-      navigate(`/item/${id}`);
+      navigate(RoutePath.ITEM_DETAIL(id));
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {

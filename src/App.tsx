@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './commons/Layout';
+import RoutePath from './constants/RoutePath';
 import ItemDetailPage from './pages/item/ItemDetailPage';
 import ItemEditPage from './pages/item/ItemEditPage';
 import ItemFormPage from './pages/item/ItemFormPage';
@@ -11,12 +12,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/item" element={<ItemPage />} />
-          <Route path="/item/new" element={<ItemFormPage />} />
+          <Route path={RoutePath.ITEM} element={<ItemPage />} />
+          <Route path={RoutePath.ITEM_NEW} element={<ItemFormPage />} />
           <Route path="/item/:id" element={<ItemDetailPage />} />
           <Route path="/item/:id/edit" element={<ItemEditPage />} />
-          <Route path="/user" element={<UserPage />} />
-          <Route path="*" element={<Navigate to="/item" replace />} />
+          <Route path={RoutePath.USER} element={<UserPage />} />
+          <Route path="*" element={<Navigate to={RoutePath.ITEM} replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

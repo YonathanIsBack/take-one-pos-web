@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
+import RoutePath from '../../constants/RoutePath';
 import { Item } from '../../constants/Type';
 import { API_ITEM } from '../../constants/Url';
 import ItemColumn from '../../table-columns/ItemColumns';
@@ -17,15 +18,15 @@ function ItemPage() {
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
 
   const handleDetail = (item: Item) => {
-    navigate(`/item/${item.id}`);
+    navigate(RoutePath.ITEM_DETAIL(item.id));
   };
 
   const handleEdit = (item: Item) => {
-    navigate(`/item/${item.id}/edit`);
+    navigate(RoutePath.ITEM_EDIT(item.id));
   };
 
   const handleNewItem = () => {
-    navigate('/item/new');
+    navigate(RoutePath.ITEM_NEW);
   };
 
   const handleDelete = async (item: Item) => {

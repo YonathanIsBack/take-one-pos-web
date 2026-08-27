@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
+import RoutePath from '../../constants/RoutePath';
 import { API_ITEM } from '../../constants/Url';
 
 function ItemFormPage() {
@@ -32,7 +33,7 @@ function ItemFormPage() {
         return;
       }
 
-      navigate(`/item/${data.id}`);
+      navigate(RoutePath.ITEM_DETAIL(data.id));
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
