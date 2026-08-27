@@ -1,7 +1,7 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material';
 
 interface TitleProps {
-  titleText: string
+  titleText: string;
 }
 
 function Title({ titleText }: TitleProps) {
@@ -11,7 +11,7 @@ function Title({ titleText }: TitleProps) {
         {titleText}
       </Typography>
     </Box>
-  )
+  );
 }
 
-export default Title
+export default Title;

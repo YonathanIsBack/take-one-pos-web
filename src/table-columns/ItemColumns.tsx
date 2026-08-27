@@ -1,4 +1,4 @@
-import { Column } from '../constants/Type'
+import { Column } from '../constants/Type';
 
 const ItemColumn: Column[] = [
   {
@@ -24,6 +24,6 @@ const ItemColumn: Column[] = [
       delete: true,
     },
   },
-]
+];
 
-export default ItemColumn
+export default ItemColumn;

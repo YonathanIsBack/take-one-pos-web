@@ -1,26 +1,26 @@
-import AddIcon from '@mui/icons-material/Add'
-import { Box, Button } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import TableData from '../../commons/TableData'
-import Title from '../../commons/Title'
-import { Item } from '../../constants/Type'
-import { API_ITEM } from '../../constants/Url'
-import ItemColumn from '../../table-columns/ItemColumns'
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import TableData from '../../commons/TableData';
+import Title from '../../commons/Title';
+import { Item } from '../../constants/Type';
+import { API_ITEM } from '../../constants/Url';
+import ItemColumn from '../../table-columns/ItemColumns';
 
 function ItemPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleDetail = (item: Item) => {
-    navigate(`/item/${item.id}`)
-  }
+    navigate(`/item/${item.id}`);
+  };
 
   const handleEdit = (item: Item) => {
-    navigate(`/item/${item.id}?action=EDIT`)
-  }
+    navigate(`/item/${item.id}?action=EDIT`);
+  };
 
   const handleNewItem = () => {
-    navigate('/item/form')
-  }
+    navigate('/item/form');
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -43,7 +43,7 @@ function ItemPage() {
         dataKey="id"
       />
     </Box>
-  )
+  );
 }
 
-export default ItemPage
+export default ItemPage;

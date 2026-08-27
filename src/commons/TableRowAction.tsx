@@ -1,13 +1,13 @@
-import { Button, TableCell } from '@mui/material'
+import { Button, TableCell } from '@mui/material';
 
 interface TableRowActionProps {
-  detail?: boolean
-  edit?: boolean
-  delete?: boolean
-  onDetail?: () => void
-  onEdit?: () => void
-  onDelete?: () => void
-  alignment?: 'left' | 'right' | 'center'
+  detail?: boolean;
+  edit?: boolean;
+  delete?: boolean;
+  onDetail?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  alignment?: 'left' | 'right' | 'center';
 }
 
 function TableRowAction({
@@ -37,7 +37,7 @@ function TableRowAction({
         </Button>
       )}
     </TableCell>
-  )
+  );
 }
 
-export default TableRowAction
+export default TableRowAction;

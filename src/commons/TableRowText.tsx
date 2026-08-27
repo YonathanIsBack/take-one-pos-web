@@ -1,12 +1,12 @@
-import { TableCell } from '@mui/material'
+import { TableCell } from '@mui/material';
 
 interface TableRowTextProps {
-  value: string
-  alignment?: 'left' | 'right' | 'center'
+  value: string;
+  alignment?: 'left' | 'right' | 'center';
 }
 
 function TableRowText({ value, alignment = 'left' }: TableRowTextProps) {
-  return <TableCell align={alignment}>{value}</TableCell>
+  return <TableCell align={alignment}>{value}</TableCell>;
 }
 
-export default TableRowText
+export default TableRowText;

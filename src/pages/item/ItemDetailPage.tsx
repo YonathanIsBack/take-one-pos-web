@@ -1,9 +1,9 @@
-import { useParams } from 'react-router-dom'
-import { Box, Typography } from '@mui/material'
-import Title from '../../commons/Title'
+import { Box, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import Title from '../../commons/Title';
 
 function ItemDetailPage() {
-  const { id } = useParams<{ id: string }>()
+  const { id } = useParams<{ id: string }>();
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -12,7 +12,7 @@ function ItemDetailPage() {
         <Typography>Item ID: {id}</Typography>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default ItemDetailPage
+export default ItemDetailPage;

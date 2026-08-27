@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material'
-import Title from '../commons/Title'
+import { Box, Typography } from '@mui/material';
+import Title from '../commons/Title';
 
 function UserPage() {
   return (
@@ -9,7 +9,7 @@ function UserPage() {
         <Typography>Content goes here</Typography>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default UserPage
+export default UserPage;

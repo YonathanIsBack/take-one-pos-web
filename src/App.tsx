@@ -1,9 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import Layout from './commons/Layout'
-import ItemEditPage from './pages/item/ItemEditPage'
-import ItemFormPage from './pages/item/ItemFormPage'
-import ItemPage from './pages/item/ItemPage'
-import UserPage from './pages/UserPage'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Layout from './commons/Layout';
+import ItemEditPage from './pages/item/ItemEditPage';
+import ItemFormPage from './pages/item/ItemFormPage';
+import ItemPage from './pages/item/ItemPage';
+import UserPage from './pages/UserPage';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

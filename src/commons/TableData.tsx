@@ -1,21 +1,30 @@
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { Column } from '../constants/Type'
-import TableRowAction from './TableRowAction'
-import TableRowDate from './TableRowDate'
-import TableRowText from './TableRowText'
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Column } from '../constants/Type';
+import TableRowAction from './TableRowAction';
+import TableRowDate from './TableRowDate';
+import TableRowText from './TableRowText';
 
 interface TableDataProps<T> {
-  url: string
-  columns: Column[]
-  onDetail?: (item: T) => void
-  onEdit?: (item: T) => void
-  onDelete?: (item: T) => void
-  dataKey: keyof T
+  url: string;
+  columns: Column[];
+  onDetail?: (item: T) => void;
+  onEdit?: (item: T) => void;
+  onDelete?: (item: T) => void;
+  dataKey: keyof T;
 }
 
 function convertToCamelCase(str: string): string {
-  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 function TableData<T extends Record<string, unknown>>({
@@ -26,40 +35,40 @@ function TableData<T extends Record<string, unknown>>({
   onDelete,
   dataKey,
 }: TableDataProps<T>) {
-  const [data, setData] = useState<T[]>([])
-  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        setData(json.items)
-        setLoading(false)
+        setData(json.items);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error('Failed to fetch data:', error)
-        setLoading(false)
-      })
-  }, [url])
+        console.error('Failed to fetch data:', error);
+        setLoading(false);
+      });
+  }, [url]);
 
   if (loading) {
     return (
       <Box sx={{ flex: 1, overflow: 'auto' }}>
         <Typography>Loading...</Typography>
       </Box>
-    )
+    );
   }
 
   const renderCell = (column: Column, item: T) => {
-    const camelCaseKey = convertToCamelCase(column.columName) as keyof T
-    const value = item[camelCaseKey]
-    const alignment = column.alignment?.toLowerCase() as 'left' | 'right' | 'center'
+    const camelCaseKey = convertToCamelCase(column.columName) as keyof T;
+    const value = item[camelCaseKey];
+    const alignment = column.alignment?.toLowerCase() as 'left' | 'right' | 'center';
 
     switch (column.columnType) {
       case 'TEXT':
-        return <TableRowText value={String(value ?? '')} alignment={alignment} />
+        return <TableRowText value={String(value ?? '')} alignment={alignment} />;
       case 'DATE':
-        return <TableRowDate value={String(value ?? '')} alignment={alignment} />
+        return <TableRowDate value={String(value ?? '')} alignment={alignment} />;
       case 'ACTION':
         return (
           <TableRowAction
@@ -71,11 +80,11 @@ function TableData<T extends Record<string, unknown>>({
             onDelete={() => onDelete?.(item)}
             alignment={alignment}
           />
-        )
+        );
       default:
-        return <TableCell align={alignment}>{String(value ?? '')}</TableCell>
+        return <TableCell align={alignment}>{String(value ?? '')}</TableCell>;
     }
-  }
+  };
 
   return (
     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
@@ -110,7 +119,7 @@ function TableData<T extends Record<string, unknown>>({
         </TableContainer>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default TableData
+export default TableData;
