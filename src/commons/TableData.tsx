@@ -23,6 +23,7 @@ interface TableDataProps<T> {
   onDelete?: (item: T) => void;
   dataKey: keyof T;
   disabled?: boolean;
+  refreshKey?: number;
 }
 
 function convertToCamelCase(str: string): string {
@@ -37,6 +38,7 @@ function TableData<T extends Record<string, unknown>>({
   onDelete,
   dataKey,
   disabled,
+  refreshKey,
 }: TableDataProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +54,7 @@ function TableData<T extends Record<string, unknown>>({
         console.error('Failed to fetch data:', error);
         setLoading(false);
       });
-  }, [url]);
+  }, [url, refreshKey]);
 
   if (loading) {
     return (

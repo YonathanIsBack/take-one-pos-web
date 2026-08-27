@@ -12,6 +12,7 @@ import ItemColumn from '../../table-columns/ItemColumns';
 function ItemPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [successModal, setSuccessModal] = useState({ open: false, message: '' });
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
 
@@ -24,7 +25,7 @@ function ItemPage() {
   };
 
   const handleNewItem = () => {
-    navigate('/item/form');
+    navigate('/item/new');
   };
 
   const handleDelete = async (item: Item) => {
@@ -42,6 +43,7 @@ function ItemPage() {
       }
 
       setSuccessModal({ open: true, message: data.message });
+      setRefreshKey((prev) => prev + 1);
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
@@ -70,6 +72,7 @@ function ItemPage() {
         onDelete={handleDelete}
         dataKey="id"
         disabled={loading}
+        refreshKey={refreshKey}
       />
 
       <DialogModal
