@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './commons/Layout';
+import ItemDetailPage from './pages/item/ItemDetailPage';
 import ItemEditPage from './pages/item/ItemEditPage';
 import ItemFormPage from './pages/item/ItemFormPage';
 import ItemPage from './pages/item/ItemPage';
@@ -12,6 +13,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/item" element={<ItemPage />} />
           <Route path="/item/new" element={<ItemFormPage />} />
+          <Route path="/item/:id" element={<ItemDetailPage />} />
           <Route path="/item/:id/edit" element={<ItemEditPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="*" element={<Navigate to="/item" replace />} />
