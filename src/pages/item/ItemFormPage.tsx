@@ -1,4 +1,5 @@
 import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
@@ -6,6 +7,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   TextField,
   Typography,
 } from '@mui/material';
@@ -91,7 +93,15 @@ function ItemFormPage() {
       </Box>
 
       <Dialog open={errorModal.open} onClose={() => setErrorModal({ open: false, message: '' })}>
-        <DialogTitle>Error</DialogTitle>
+        <DialogTitle>
+          Error
+          <IconButton
+            onClick={() => setErrorModal({ open: false, message: '' })}
+            sx={{ position: 'absolute', right: 8, top: 8 }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <Typography>{errorModal.message}</Typography>
         </DialogContent>
