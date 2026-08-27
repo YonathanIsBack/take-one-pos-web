@@ -24,6 +24,7 @@ interface TableDataProps<T> {
   dataKey: keyof T;
   disabled?: boolean;
   refreshKey?: number;
+  responseKey?: string;
 }
 
 function convertToCamelCase(str: string): string {
@@ -39,6 +40,7 @@ function TableData<T extends Record<string, unknown>>({
   dataKey,
   disabled,
   refreshKey,
+  responseKey = 'items',
 }: TableDataProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,14 +49,14 @@ function TableData<T extends Record<string, unknown>>({
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        setData(json.items);
+        setData(json[responseKey]);
         setLoading(false);
       })
       .catch((error) => {
         console.error('Failed to fetch data:', error);
         setLoading(false);
       });
-  }, [url, refreshKey]);
+  }, [url, refreshKey, responseKey]);
 
   if (loading) {
     return (

@@ -1,8 +1,10 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Tab, Tabs, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
+import PriceHistoryColumn from '../../table-columns/PriceHistoryColumn';
 
 interface ItemDetail {
   id: number;
@@ -11,10 +13,23 @@ interface ItemDetail {
   updatedAt: string | null;
 }
 
+interface PriceHistory {
+  [key: string]: unknown;
+  id: number;
+  itemId: number;
+  cogs: string;
+  sellingPrice: string;
+  validFrom: string;
+  validTo: string;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
 function ItemDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<ItemDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
     fetch(`${BASE_API_URL}/items/${id}`)
@@ -28,6 +43,10 @@ function ItemDetailPage() {
         setLoading(false);
       });
   }, [id]);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -63,6 +82,23 @@ function ItemDetailPage() {
               {item?.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-'}
             </Typography>
           </>
+        )}
+      </Box>
+
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
+        <Tabs value={tabValue} onChange={handleTabChange}>
+          <Tab label="Price History" />
+        </Tabs>
+      </Box>
+
+      <Box sx={{ flex: 1, overflow: 'auto', p: 3 }}>
+        {tabValue === 0 && (
+          <TableData<PriceHistory>
+            url={`${BASE_API_URL}/items/${id}/price/history`}
+            columns={PriceHistoryColumn}
+            dataKey="id"
+            responseKey="price_history"
+          />
         )}
       </Box>
     </Box>
