@@ -5,19 +5,21 @@ import ItemDetailPage from './pages/item/ItemDetailPage';
 import ItemEditPage from './pages/item/ItemEditPage';
 import ItemFormPage from './pages/item/ItemFormPage';
 import ItemPage from './pages/item/ItemPage';
+import LoginPage from './pages/LoginPage';
 import UserPage from './pages/UserPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path={RoutePath.LOGIN} element={<LoginPage />} />
         <Route element={<Layout />}>
           <Route path={RoutePath.ITEM} element={<ItemPage />} />
           <Route path={RoutePath.ITEM_NEW} element={<ItemFormPage />} />
           <Route path="/item/:id" element={<ItemDetailPage />} />
           <Route path="/item/:id/edit" element={<ItemEditPage />} />
           <Route path={RoutePath.USER} element={<UserPage />} />
-          <Route path="*" element={<Navigate to={RoutePath.ITEM} replace />} />
+          <Route path="*" element={<Navigate to={RoutePath.LOGIN} replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

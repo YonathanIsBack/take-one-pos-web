@@ -87,7 +87,7 @@ function ItemDetailPage() {
           valid_to: priceHistoryForm.validTo?.toISOString(),
         }),
       });
-
+      
       const data = await response.json();
 
       if (!response.ok) {
