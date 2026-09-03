@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Column } from '../constants/Type';
+import fetchWithAuth from '../utils/fetchWithAuth';
 import TableRowAction from './TableRowAction';
 import TableRowCurrency from './TableRowCurrency';
 import TableRowDate from './TableRowDate';
@@ -48,7 +49,7 @@ function TableData<T extends Record<string, unknown>>({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(url)
+    fetchWithAuth(url)
       .then((response) => response.json())
       .then((json) => {
         setData(json[responseKey]);

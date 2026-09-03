@@ -8,6 +8,7 @@ import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
 import { Item } from '../../constants/Type';
 import { API_ITEM } from '../../constants/Url';
+import fetchWithAuth from '../../utils/fetchWithAuth';
 import ItemColumn from '../../table-columns/ItemColumns';
 
 function ItemPage() {
@@ -32,7 +33,7 @@ function ItemPage() {
   const handleDelete = async (item: Item) => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_ITEM}/${item.id}`, {
+      const response = await fetchWithAuth(`${API_ITEM}/${item.id}`, {
         method: 'DELETE',
       });
 

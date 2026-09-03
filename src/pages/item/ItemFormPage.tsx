@@ -6,6 +6,7 @@ import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
 import { API_ITEM } from '../../constants/Url';
+import fetchWithAuth from '../../utils/fetchWithAuth';
 
 function ItemFormPage() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function ItemFormPage() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await fetch(API_ITEM, {
+      const response = await fetchWithAuth(API_ITEM, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: item.name }),

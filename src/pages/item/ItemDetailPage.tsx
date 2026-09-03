@@ -17,6 +17,7 @@ import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
+import fetchWithAuth from '../../utils/fetchWithAuth';
 import PriceHistoryColumn from '../../table-columns/PriceHistoryColumn';
 
 interface ItemDetail {
@@ -54,7 +55,7 @@ function ItemDetailPage() {
   });
 
   useEffect(() => {
-    fetch(`${BASE_API_URL}/items/${id}`)
+    fetchWithAuth(`${BASE_API_URL}/items/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setItem(data.item);
@@ -77,7 +78,7 @@ function ItemDetailPage() {
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const response = await fetch(`${BASE_API_URL}/items/${id}/price/history`, {
+      const response = await fetchWithAuth(`${BASE_API_URL}/items/${id}/price/history`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

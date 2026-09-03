@@ -6,6 +6,7 @@ import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
 import { API_ITEM, BASE_API_URL } from '../../constants/Url';
+import fetchWithAuth from '../../utils/fetchWithAuth';
 
 function ItemEditPage() {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +17,7 @@ function ItemEditPage() {
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
 
   useEffect(() => {
-    fetch(`${BASE_API_URL}/items/${id}`)
+    fetchWithAuth(`${BASE_API_URL}/items/${id}`)
       .then((response) => {
         if (response.status === 404) {
           navigate(RoutePath.ITEM);
@@ -42,7 +43,7 @@ function ItemEditPage() {
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const response = await fetch(`${API_ITEM}/${id}`, {
+      const response = await fetchWithAuth(`${API_ITEM}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: item.name }),
