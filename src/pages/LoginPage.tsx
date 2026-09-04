@@ -120,6 +120,11 @@ function LoginPage() {
           type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleLogin();
+            }
+          }}
           disabled={loading}
           slotProps={{
             input: {
