@@ -99,7 +99,7 @@ function TableData<T extends Record<string, unknown>>({
   };
 
   return (
-    <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
       {disabled && (
         <Box
           sx={{

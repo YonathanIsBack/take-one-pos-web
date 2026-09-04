@@ -92,7 +92,7 @@ function ItemDetailPage() {
           valid_to: priceHistoryForm.validTo?.toISOString(),
         }),
       });
-      
+
       const data = await response.json();
 
       if (!response.ok) {
@@ -112,161 +112,161 @@ function ItemDetailPage() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Item Detail" />
-      <Box sx={{ p: 3 }}>
-        {loading ? (
-          <>
-            <Skeleton variant="text" width="30%" height={40} sx={{ mb: 1 }} />
-            <Skeleton variant="text" width="50%" height={30} sx={{ mb: 2 }} />
-            <Skeleton variant="text" width="25%" height={30} sx={{ mb: 1 }} />
-            <Skeleton variant="text" width="40%" height={30} />
-          </>
-        ) : (
-          <>
-            <Typography variant="h6" gutterBottom>
-              Name
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {item?.name}
-            </Typography>
+      <Box sx={{ overflow: 'auto' }}>
+        <Box sx={{ p: 3 }}>
+          {loading ? (
+            <>
+              <Skeleton variant="text" width="30%" height={40} sx={{ mb: 1 }} />
+              <Skeleton variant="text" width="50%" height={30} sx={{ mb: 2 }} />
+              <Skeleton variant="text" width="25%" height={30} sx={{ mb: 1 }} />
+              <Skeleton variant="text" width="40%" height={30} />
+            </>
+          ) : (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Name
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.name}
+              </Typography>
 
-            <Typography variant="h6" gutterBottom>
-              Created At
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-'}
-            </Typography>
+              <Typography variant="h6" gutterBottom>
+                Created At
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-'}
+              </Typography>
 
-            <Typography variant="h6" gutterBottom>
-              Updated At
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {item?.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-'}
-            </Typography>
+              <Typography variant="h6" gutterBottom>
+                Updated At
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-'}
+              </Typography>
 
-            <Typography variant="h6" gutterBottom>
-              COGS
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {item?.price?.cogs ?? 0}
-            </Typography>
+              <Typography variant="h6" gutterBottom>
+                COGS
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.price?.cogs ?? 0}
+              </Typography>
 
-            <Typography variant="h6" gutterBottom>
-              Selling Price
-            </Typography>
-            <Typography variant="body1">
-              {item?.price?.sellingPrice ?? 0}
-            </Typography>
-          </>
-        )}
-      </Box>
+              <Typography variant="h6" gutterBottom>
+                Selling Price
+              </Typography>
+              <Typography variant="body1">{item?.price?.sellingPrice ?? 0}</Typography>
+            </>
+          )}
+        </Box>
 
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
-        <Tabs value={tabValue} onChange={handleTabChange}>
-          <Tab label="Price History" />
-        </Tabs>
-      </Box>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
+          <Tabs value={tabValue} onChange={handleTabChange}>
+            <Tab label="Price History" />
+          </Tabs>
+        </Box>
 
-      <Box sx={{ flex: 1, overflow: 'auto', p: 3 }}>
-        {tabValue === 0 && (
-          <>
-            {!showForm && (
-              <Box sx={{ mb: 2 }}>
-                <Button
-                  variant="contained"
-                  startIcon={<SaveIcon />}
-                  onClick={() => setShowForm(true)}
-                  sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
-                >
-                  New Data
-                </Button>
-              </Box>
-            )}
-
-            {showForm ? (
-              <Box sx={{ position: 'relative' }}>
-                {submitting && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      bgcolor: 'rgba(255, 255, 255, 0.7)',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      zIndex: 10,
-                    }}
-                  >
-                    <CircularProgress />
-                  </Box>
-                )}
-                <TextField
-                  fullWidth
-                  label="Cogs"
-                  name="cogs"
-                  value={priceHistoryForm.cogs}
-                  onChange={handleFormChange}
-                  disabled={submitting}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  fullWidth
-                  label="Selling Price"
-                  name="sellingPrice"
-                  value={priceHistoryForm.sellingPrice}
-                  onChange={handleFormChange}
-                  disabled={submitting}
-                  sx={{ mb: 2 }}
-                />
-                <DatePicker
-                  label="Valid From"
-                  value={priceHistoryForm.validFrom}
-                  onChange={(newValue) =>
-                    setPriceHistoryForm({ ...priceHistoryForm, validFrom: newValue })
-                  }
-                  disabled={submitting}
-                  sx={{ mb: 2, width: '100%' }}
-                />
-                <DatePicker
-                  label="Valid To"
-                  value={priceHistoryForm.validTo}
-                  onChange={(newValue) =>
-                    setPriceHistoryForm({ ...priceHistoryForm, validTo: newValue })
-                  }
-                  disabled={submitting}
-                  sx={{ mb: 2, width: '100%' }}
-                />
-                <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ flex: 1, overflow: 'auto', p: 3 }}>
+          {tabValue === 0 && (
+            <>
+              {!showForm && (
+                <Box sx={{ mb: 2 }}>
                   <Button
                     variant="contained"
                     startIcon={<SaveIcon />}
-                    onClick={handleSubmit}
-                    disabled={submitting}
+                    onClick={() => setShowForm(true)}
                     sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
                   >
-                    Save
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    onClick={() => setShowForm(false)}
-                    disabled={submitting}
-                  >
-                    Cancel
+                    New Data
                   </Button>
                 </Box>
-              </Box>
-            ) : (
-              <TableData<PriceHistory>
-                url={`${BASE_API_URL}/items/${id}/price/history`}
-                columns={PriceHistoryColumn}
-                dataKey="id"
-                responseKey="price_history"
-              />
-            )}
-          </>
-        )}
+              )}
+
+              {showForm ? (
+                <Box sx={{ position: 'relative' }}>
+                  {submitting && (
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        bgcolor: 'rgba(255, 255, 255, 0.7)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 10,
+                      }}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  )}
+                  <TextField
+                    fullWidth
+                    label="Cogs"
+                    name="cogs"
+                    value={priceHistoryForm.cogs}
+                    onChange={handleFormChange}
+                    disabled={submitting}
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Selling Price"
+                    name="sellingPrice"
+                    value={priceHistoryForm.sellingPrice}
+                    onChange={handleFormChange}
+                    disabled={submitting}
+                    sx={{ mb: 2 }}
+                  />
+                  <DatePicker
+                    label="Valid From"
+                    value={priceHistoryForm.validFrom}
+                    onChange={(newValue) =>
+                      setPriceHistoryForm({ ...priceHistoryForm, validFrom: newValue })
+                    }
+                    disabled={submitting}
+                    sx={{ mb: 2, width: '100%' }}
+                  />
+                  <DatePicker
+                    label="Valid To"
+                    value={priceHistoryForm.validTo}
+                    onChange={(newValue) =>
+                      setPriceHistoryForm({ ...priceHistoryForm, validTo: newValue })
+                    }
+                    disabled={submitting}
+                    sx={{ mb: 2, width: '100%' }}
+                  />
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Button
+                      variant="contained"
+                      startIcon={<SaveIcon />}
+                      onClick={handleSubmit}
+                      disabled={submitting}
+                      sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setShowForm(false)}
+                      disabled={submitting}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </Box>
+              ) : (
+                <TableData<PriceHistory>
+                  url={`${BASE_API_URL}/items/${id}/price/history`}
+                  columns={PriceHistoryColumn}
+                  dataKey="id"
+                  responseKey="price_history"
+                />
+              )}
+            </>
+          )}
+        </Box>
       </Box>
 
       <DialogModal
