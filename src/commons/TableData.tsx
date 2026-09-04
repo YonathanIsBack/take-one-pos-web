@@ -69,16 +69,16 @@ function TableData<T extends Record<string, unknown>>({
     );
   }
 
-  const renderCell = (column: Column, item: T) => {
+  const renderCell = (column: Column, item: T, width: string) => {
     const camelCaseKey = convertToCamelCase(column.columName) as keyof T;
     const value = item[camelCaseKey];
     const alignment = column.alignment?.toLowerCase() as 'left' | 'right' | 'center';
 
     switch (column.columnType) {
       case ColumnType.TEXT:
-        return <TableRowText value={String(value ?? '')} alignment={alignment} />;
+        return <TableRowText value={String(value ?? '')} alignment={alignment} sx={{ width }} />;
       case ColumnType.DATE:
-        return <TableRowDate value={String(value ?? '')} alignment={alignment} />;
+        return <TableRowDate value={String(value ?? '')} alignment={alignment} sx={{ width }} />;
       case ColumnType.ACTION:
         return (
           <TableRowAction
@@ -89,14 +89,17 @@ function TableData<T extends Record<string, unknown>>({
             onEdit={() => onEdit?.(item)}
             onDelete={() => onDelete?.(item)}
             alignment={alignment}
+            sx={{ width }}
           />
         );
       case ColumnType.CURRENCY:
-        return <TableRowCurrency value={value as string | number} />;
+        return <TableRowCurrency value={value as string | number} sx={{ width }} />;
       default:
-        return <TableCell align={alignment}>{String(value ?? '')}</TableCell>;
+        return <TableCell align={alignment} sx={{ width }}>{String(value ?? '')}</TableCell>;
     }
   };
+
+  const columnWidth = `${100 / columns.length}%`;
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
@@ -119,14 +122,14 @@ function TableData<T extends Record<string, unknown>>({
         </Box>
       )}
       <TableContainer sx={{ flex: '0 0 auto' }}>
-        <Table>
+        <Table sx={{ tableLayout: 'fixed' }}>
           <TableHead>
             <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
               {columns.map((column) => (
                 <TableCell
                   key={column.columName}
                   align="center"
-                  sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}
+                  sx={{ fontWeight: 'bold', fontSize: '1.1rem', width: columnWidth }}
                 >
                   {column.label}
                 </TableCell>
@@ -137,11 +140,11 @@ function TableData<T extends Record<string, unknown>>({
       </TableContainer>
       <Box sx={{ flex: 1, overflow: 'auto' }}>
         <TableContainer>
-          <Table>
+          <Table sx={{ tableLayout: 'fixed' }}>
             <TableBody>
               {data.map((item) => (
                 <TableRow key={String(item[dataKey])}>
-                  {columns.map((column) => renderCell(column, item))}
+                  {columns.map((column) => renderCell(column, item, columnWidth))}
                 </TableRow>
               ))}
             </TableBody>

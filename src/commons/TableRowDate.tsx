@@ -1,12 +1,13 @@
-import { TableCell } from '@mui/material';
+import { SxProps, TableCell } from '@mui/material';
 
 interface TableRowDateProps {
   value: string;
   format?: string;
   alignment?: 'left' | 'right' | 'center';
+  sx?: SxProps;
 }
 
-function TableRowDate({ value, format = 'MM/DD/YYYY', alignment = 'left' }: TableRowDateProps) {
+function TableRowDate({ value, format = 'MM/DD/YYYY', alignment = 'left', sx }: TableRowDateProps) {
   const date = new Date(value);
 
   const formattedDate = format
@@ -14,7 +15,7 @@ function TableRowDate({ value, format = 'MM/DD/YYYY', alignment = 'left' }: Tabl
     .replace('MM', (date.getMonth() + 1).toString().padStart(2, '0'))
     .replace('DD', date.getDate().toString().padStart(2, '0'));
 
-  return <TableCell align={alignment}>{formattedDate}</TableCell>;
+  return <TableCell align={alignment} sx={sx}>{formattedDate}</TableCell>;
 }
 
 export default TableRowDate;

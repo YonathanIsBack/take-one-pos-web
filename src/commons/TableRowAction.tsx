@@ -1,4 +1,4 @@
-import { Button, TableCell } from '@mui/material';
+import { Button, SxProps, TableCell } from '@mui/material';
 
 interface TableRowActionProps {
   detail?: boolean;
@@ -8,6 +8,7 @@ interface TableRowActionProps {
   onEdit?: () => void;
   onDelete?: () => void;
   alignment?: 'left' | 'right' | 'center';
+  sx?: SxProps;
 }
 
 function TableRowAction({
@@ -18,9 +19,10 @@ function TableRowAction({
   onEdit,
   onDelete,
   alignment = 'right',
+  sx,
 }: TableRowActionProps) {
   return (
-    <TableCell align={alignment}>
+    <TableCell align={alignment} sx={sx}>
       {detail && (
         <Button variant="contained" size="small" onClick={onDetail} sx={{ mr: 1 }}>
           Detail
