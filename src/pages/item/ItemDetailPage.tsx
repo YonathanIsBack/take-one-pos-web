@@ -25,6 +25,10 @@ interface ItemDetail {
   name: string;
   createdAt: string;
   updatedAt: string | null;
+  price: {
+    cogs: number;
+    sellingPrice: number;
+  };
 }
 
 interface PriceHistory {
@@ -135,8 +139,22 @@ function ItemDetailPage() {
             <Typography variant="h6" gutterBottom>
               Updated At
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" sx={{ mb: 3 }}>
               {item?.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-'}
+            </Typography>
+
+            <Typography variant="h6" gutterBottom>
+              COGS
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 3 }}>
+              {item?.price?.cogs ?? 0}
+            </Typography>
+
+            <Typography variant="h6" gutterBottom>
+              Selling Price
+            </Typography>
+            <Typography variant="body1">
+              {item?.price?.sellingPrice ?? 0}
             </Typography>
           </>
         )}
