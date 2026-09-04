@@ -18,6 +18,7 @@ import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
 import fetchWithAuth from '../../utils/fetchWithAuth';
+import formatToCurrency from '../../utils/formatToCurrency';
 import PriceHistoryColumn from '../../table-columns/PriceHistoryColumn';
 
 interface ItemDetail {
@@ -123,38 +124,40 @@ function ItemDetailPage() {
             </>
           ) : (
             <>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Name
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
                 {item?.name}
               </Typography>
 
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Created At
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
                 {item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-'}
               </Typography>
 
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Updated At
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
                 {item?.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-'}
               </Typography>
 
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 COGS
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
-                {item?.price?.cogs ?? 0}
+                {formatToCurrency(item?.price?.cogs ?? 0)}
               </Typography>
 
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Selling Price
               </Typography>
-              <Typography variant="body1">{item?.price?.sellingPrice ?? 0}</Typography>
+              <Typography variant="body1">
+                {formatToCurrency(item?.price?.sellingPrice ?? 0)}
+              </Typography>
             </>
           )}
         </Box>
