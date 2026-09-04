@@ -88,9 +88,9 @@ function ItemDetailPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           cogs: priceHistoryForm.cogs,
-          selling_price: priceHistoryForm.sellingPrice,
-          valid_from: priceHistoryForm.validFrom?.toISOString(),
-          valid_to: priceHistoryForm.validTo?.toISOString(),
+          sellingPrice: priceHistoryForm.sellingPrice,
+          validFrom: priceHistoryForm.validFrom?.toISOString(),
+          validTo: priceHistoryForm.validTo?.toISOString(),
         }),
       });
 
@@ -264,7 +264,7 @@ function ItemDetailPage() {
                   url={`${BASE_API_URL}/items/${id}/price/history`}
                   columns={PriceHistoryColumn}
                   dataKey="id"
-                  responseKey="price_history"
+                   responseKey="priceHistory"
                 />
               )}
             </>

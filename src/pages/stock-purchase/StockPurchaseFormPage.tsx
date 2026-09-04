@@ -26,7 +26,7 @@ function StockPurchaseFormPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          purchase_date: form.purchaseDate?.toISOString(),
+          purchaseDate: form.purchaseDate?.toISOString(),
           status: form.status,
         }),
       });

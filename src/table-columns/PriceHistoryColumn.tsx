@@ -9,19 +9,19 @@ const PriceHistoryColumn: Column[] = [
     alignment: 'Right',
   },
   {
-    columName: 'selling_price',
+    columName: 'sellingPrice',
     columnType: ColumnType.CURRENCY,
     label: 'Selling Price',
     alignment: 'Right',
   },
   {
-    columName: 'valid_from',
+    columName: 'validFrom',
     columnType: ColumnType.DATE,
     label: 'Valid From',
     alignment: 'Left',
   },
   {
-    columName: 'valid_to',
+    columName: 'validTo',
     columnType: ColumnType.DATE,
     label: 'Valid To',
     alignment: 'Left',

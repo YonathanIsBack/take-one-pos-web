@@ -3,7 +3,7 @@ import { Column } from '../constants/Type';
 
 const StockPurchaseItemColumn: Column[] = [
   {
-    columName: 'item_id',
+    columName: 'itemId',
     columnType: ColumnType.TEXT,
     label: 'Item ID',
     alignment: 'Left',
@@ -21,7 +21,7 @@ const StockPurchaseItemColumn: Column[] = [
     alignment: 'Right',
   },
   {
-    columName: 'created_at',
+    columName: 'createdAt',
     columnType: ColumnType.DATE,
     label: 'Created At',
     alignment: 'Left',

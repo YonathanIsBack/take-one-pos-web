@@ -9,7 +9,7 @@ const ItemColumn: Column[] = [
     alignment: 'Left',
   },
   {
-    columName: 'created_at',
+    columName: 'createdAt',
     columnType: ColumnType.DATE,
     label: 'Created At',
     alignment: 'Left',

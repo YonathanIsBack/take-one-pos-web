@@ -34,7 +34,7 @@ function ItemFormPage() {
         return;
       }
 
-      navigate(RoutePath.ITEM_DETAIL(data.id));
+      navigate(RoutePath.ITEM_DETAIL(data.item.id));
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {

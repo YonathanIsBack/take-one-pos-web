@@ -99,13 +99,13 @@ function StockPurchaseDetailPage() {
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const response = await fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}/items`, {
+      const response = await fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}/detail`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          item_id: selectedItem?.id,
-          buying_price: parseFloat(itemForm.buyingPrice),
-          additional_cost: parseFloat(itemForm.additionalCost),
+          itemId: selectedItem?.id,
+          buyingPrice: parseFloat(itemForm.buyingPrice),
+          additionalCost: parseFloat(itemForm.additionalCost),
           cogs,
           quantity: parseInt(itemForm.quantity),
           total,
@@ -290,10 +290,10 @@ function StockPurchaseDetailPage() {
                 </Box>
               ) : (
                 <TableData<StockPurchaseItem>
-                  url={`${BASE_API_URL}/stock-purchase/${id}/items`}
+                  url={`${BASE_API_URL}/stock-purchase/${id}/detail`}
                   columns={StockPurchaseItemColumn}
                   dataKey="id"
-                  responseKey="stock_purchase_items"
+                  responseKey="stockPurchaseItems"
                 />
               )}
             </>
