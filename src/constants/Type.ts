@@ -6,6 +6,15 @@ export interface Item {
   updatedAt: string | null;
 }
 
+export interface StockPurchase {
+  [key: string]: unknown;
+  id: number;
+  purchaseDate: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
 export interface ColumnOption {
   detail?: boolean;
   edit?: boolean;
