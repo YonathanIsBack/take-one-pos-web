@@ -6,6 +6,7 @@ import ItemEditPage from './pages/item/ItemEditPage';
 import ItemFormPage from './pages/item/ItemFormPage';
 import ItemPage from './pages/item/ItemPage';
 import LoginPage from './pages/LoginPage';
+import StockPurchaseDetailPage from './pages/stock-purchase/StockPurchaseDetailPage';
 import StockPurchaseFormPage from './pages/stock-purchase/StockPurchaseFormPage';
 import StockPurchasePage from './pages/stock-purchase/StockPurchasePage';
 import UserPage from './pages/UserPage';
@@ -22,7 +23,7 @@ function App() {
           <Route path="/item/:id/edit" element={<ItemEditPage />} />
           <Route path={RoutePath.STOCK_PURCHASE} element={<StockPurchasePage />} />
           <Route path={RoutePath.STOCK_PURCHASE_NEW} element={<StockPurchaseFormPage />} />
-          <Route path="/stock-purchase/:id" element={<StockPurchasePage />} />
+          <Route path="/stock-purchase/:id" element={<StockPurchaseDetailPage />} />
           <Route path="/stock-purchase/:id/edit" element={<StockPurchasePage />} />
           <Route path={RoutePath.USER} element={<UserPage />} />
           <Route path="*" element={<Navigate to={RoutePath.LOGIN} replace />} />

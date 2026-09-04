@@ -75,7 +75,7 @@ function StockPurchasePage() {
         dataKey="id"
         disabled={loading}
         refreshKey={refreshKey}
-        responseKey="stock_purchases"
+        responseKey="stockPurchases"
       />
 
       <DialogModal
