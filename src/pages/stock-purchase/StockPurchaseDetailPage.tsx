@@ -1,5 +1,6 @@
 import SaveIcon from '@mui/icons-material/Save';
 import {
+  Autocomplete,
   Box,
   Button,
   CircularProgress,
@@ -9,16 +10,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
-import fetchWithAuth from '../../utils/fetchWithAuth';
 import StockPurchaseItemColumn from '../../table-columns/StockPurchaseItemColumn';
+import fetchWithAuth from '../../utils/fetchWithAuth';
 
 interface StockPurchaseDetail {
   id: number;
@@ -39,6 +38,11 @@ interface StockPurchaseItem {
   updatedAt: string | null;
 }
 
+interface ItemOption {
+  id: number;
+  name: string;
+}
+
 function StockPurchaseDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<StockPurchaseDetail | null>(null);
@@ -47,11 +51,16 @@ function StockPurchaseDetailPage() {
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+  const [items, setItems] = useState<ItemOption[]>([]);
+  const [selectedItem, setSelectedItem] = useState<ItemOption | null>(null);
   const [itemForm, setItemForm] = useState({
-    itemId: '',
+    buyingPrice: '',
+    additionalCost: '',
     quantity: '',
-    price: '',
   });
+
+  const cogs = parseFloat(itemForm.buyingPrice || '0') + parseFloat(itemForm.additionalCost || '0');
+  const total = cogs * parseInt(itemForm.quantity || '0');
 
   useEffect(() => {
     fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}`)
@@ -65,6 +74,19 @@ function StockPurchaseDetailPage() {
         setLoading(false);
       });
   }, [id]);
+
+  useEffect(() => {
+    if (showForm) {
+      fetchWithAuth(`${BASE_API_URL}/items`)
+        .then((response) => response.json())
+        .then((data) => {
+          setItems(data.items);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch items:', error);
+        });
+    }
+  }, [showForm]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -81,9 +103,12 @@ function StockPurchaseDetailPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          item_id: parseInt(itemForm.itemId),
+          item_id: selectedItem?.id,
+          buying_price: parseFloat(itemForm.buyingPrice),
+          additional_cost: parseFloat(itemForm.additionalCost),
+          cogs,
           quantity: parseInt(itemForm.quantity),
-          price: parseFloat(itemForm.price),
+          total,
         }),
       });
 
@@ -95,7 +120,8 @@ function StockPurchaseDetailPage() {
       }
 
       setShowForm(false);
-      setItemForm({ itemId: '', quantity: '', price: '' });
+      setSelectedItem(null);
+      setItemForm({ buyingPrice: '', additionalCost: '', quantity: '' });
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
@@ -190,19 +216,47 @@ function StockPurchaseDetailPage() {
                       <CircularProgress />
                     </Box>
                   )}
+                  <Autocomplete
+                    options={items}
+                    getOptionLabel={(option) => option.name}
+                    value={selectedItem}
+                    onChange={(_event, newValue) => setSelectedItem(newValue)}
+                    disabled={submitting}
+                    sx={{ mb: 2 }}
+                    renderInput={(params) => <TextField {...params} label="Item" />}
+                  />
                   <TextField
                     fullWidth
-                    label="Item ID"
-                    name="itemId"
-                    value={itemForm.itemId}
+                    label="Buying Price"
+                    name="buyingPrice"
+                    type="number"
+                    value={itemForm.buyingPrice}
                     onChange={handleFormChange}
                     disabled={submitting}
                     sx={{ mb: 2 }}
                   />
                   <TextField
                     fullWidth
+                    label="Additional Cost"
+                    name="additionalCost"
+                    type="number"
+                    value={itemForm.additionalCost}
+                    onChange={handleFormChange}
+                    disabled={submitting}
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    fullWidth
+                    label="COGS"
+                    value={cogs}
+                    disabled
+                    sx={{ mb: 2 }}
+                  />
+                  <TextField
+                    fullWidth
                     label="Quantity"
                     name="quantity"
+                    type="number"
                     value={itemForm.quantity}
                     onChange={handleFormChange}
                     disabled={submitting}
@@ -210,11 +264,9 @@ function StockPurchaseDetailPage() {
                   />
                   <TextField
                     fullWidth
-                    label="Price"
-                    name="price"
-                    value={itemForm.price}
-                    onChange={handleFormChange}
-                    disabled={submitting}
+                    label="Total"
+                    value={total}
+                    disabled
                     sx={{ mb: 2 }}
                   />
                   <Box sx={{ display: 'flex', gap: 2 }}>
