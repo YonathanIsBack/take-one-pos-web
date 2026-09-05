@@ -52,6 +52,7 @@ interface StockPurchaseItemDetail {
   total: string;
   createdAt: string;
   updatedAt: string | null;
+  rowversion: number;
   item: {
     name: string;
   };
@@ -74,6 +75,9 @@ function StockPurchaseDetailPage() {
   });
   const [selectedDetail, setSelectedDetail] = useState<StockPurchaseItemDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [editingDetailId, setEditingDetailId] = useState<number | null>(null);
+  const [editingRowVersion, setEditingRowVersion] = useState<number | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const cogs = parseFloat(itemForm.buyingPrice || '0') + parseFloat(itemForm.additionalCost || '0');
   const total = cogs * parseInt(itemForm.quantity || '0');
@@ -127,11 +131,38 @@ function StockPurchaseDetailPage() {
     setItemForm({ ...itemForm, [e.target.name]: e.target.value });
   };
 
+  const handleEdit = async (stockPurchaseItem: StockPurchaseItem) => {
+    setDetailLoading(true);
+    try {
+      const response = await fetchWithAuth(
+        `${BASE_API_URL}/stock-purchase/${id}/detail/${stockPurchaseItem.id}`
+      );
+      const data = await response.json();
+      const detail = data.stockPurchaseDetail as StockPurchaseItemDetail;
+      setSelectedItem({ id: stockPurchaseItem.itemId, name: detail.item.name });
+      setItemForm({
+        buyingPrice: detail.buyingPrice,
+        additionalCost: detail.additionalCost,
+        quantity: String(detail.quantity),
+      });
+      setEditingDetailId(stockPurchaseItem.id);
+      setEditingRowVersion(detail.rowversion);
+      setShowForm(true);
+    } catch (error) {
+      console.error('Failed to fetch stock purchase item detail:', error);
+    } finally {
+      setDetailLoading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     setSubmitting(true);
     try {
-      const response = await fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}/detail`, {
-        method: 'POST',
+      const url = editingDetailId
+        ? `${BASE_API_URL}/stock-purchase/${id}/detail/${editingDetailId}`
+        : `${BASE_API_URL}/stock-purchase/${id}/detail`;
+      const response = await fetchWithAuth(url, {
+        method: editingDetailId ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           itemId: selectedItem?.id,
@@ -140,6 +171,7 @@ function StockPurchaseDetailPage() {
           cogs,
           quantity: parseInt(itemForm.quantity),
           total,
+          rowversion: editingRowVersion,
         }),
       });
 
@@ -153,6 +185,9 @@ function StockPurchaseDetailPage() {
       setShowForm(false);
       setSelectedItem(null);
       setItemForm({ buyingPrice: '', additionalCost: '', quantity: '' });
+      setEditingDetailId(null);
+      setEditingRowVersion(null);
+      setRefreshKey((prev) => prev + 1);
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
@@ -297,7 +332,11 @@ function StockPurchaseDetailPage() {
                       <Button
                         variant="contained"
                         startIcon={<SaveIcon />}
-                        onClick={() => setShowForm(true)}
+                        onClick={() => {
+                          setEditingDetailId(null);
+                          setEditingRowVersion(null);
+                          setShowForm(true);
+                        }}
                         sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
                       >
                         New Item
@@ -390,7 +429,11 @@ function StockPurchaseDetailPage() {
                         </Button>
                         <Button
                           variant="outlined"
-                          onClick={() => setShowForm(false)}
+                          onClick={() => {
+                            setShowForm(false);
+                            setEditingDetailId(null);
+                            setEditingRowVersion(null);
+                          }}
                           disabled={submitting}
                         >
                           Cancel
@@ -404,6 +447,8 @@ function StockPurchaseDetailPage() {
                       dataKey="id"
                       responseKey="stockPurchaseDetail"
                       onDetail={handleDetail}
+                      onEdit={handleEdit}
+                      refreshKey={refreshKey}
                     />
                   )}
                 </>
