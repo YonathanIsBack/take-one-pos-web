@@ -70,8 +70,9 @@ function TableData<T extends Record<string, unknown>>({
   }
 
   const renderCell = (column: Column, item: T, width: string) => {
-    const camelCaseKey = convertToCamelCase(column.columName) as keyof T;
-    const value = item[camelCaseKey];
+    const camelCaseKey = convertToCamelCase(column.columName);
+    const source = column.parentKey ? (item[column.parentKey] as Record<string, unknown>) : item;
+    const value = source?.[camelCaseKey];
     const alignment = column.alignment?.toLowerCase() as 'left' | 'right' | 'center';
 
     switch (column.columnType) {

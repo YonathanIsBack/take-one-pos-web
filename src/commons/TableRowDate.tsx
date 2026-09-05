@@ -9,6 +9,11 @@ interface TableRowDateProps {
 
 function TableRowDate({ value, format = 'MM/DD/YYYY', alignment = 'left', sx }: TableRowDateProps) {
   const date = new Date(value);
+  const isValid = !isNaN(date.getTime());
+
+  if (!isValid) {
+    return <TableCell align={alignment} sx={sx}>-</TableCell>;
+  }
 
   const formattedDate = format
     .replace('YYYY', date.getFullYear().toString())

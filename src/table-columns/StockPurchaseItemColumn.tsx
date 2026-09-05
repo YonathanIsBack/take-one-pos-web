@@ -3,10 +3,29 @@ import { Column } from '../constants/Type';
 
 const StockPurchaseItemColumn: Column[] = [
   {
-    columName: 'itemId',
+    columName: 'name',
     columnType: ColumnType.TEXT,
-    label: 'Item ID',
+    label: 'Item Name',
     alignment: 'Left',
+    parentKey: 'item',
+  },
+  {
+    columName: 'buyingPrice',
+    columnType: ColumnType.CURRENCY,
+    label: 'Buying Price',
+    alignment: 'Right',
+  },
+  {
+    columName: 'additionalCost',
+    columnType: ColumnType.CURRENCY,
+    label: 'Additional Cost',
+    alignment: 'Right',
+  },
+  {
+    columName: 'cogs',
+    columnType: ColumnType.CURRENCY,
+    label: 'COGS',
+    alignment: 'Right',
   },
   {
     columName: 'quantity',
@@ -15,15 +34,21 @@ const StockPurchaseItemColumn: Column[] = [
     alignment: 'Right',
   },
   {
-    columName: 'price',
+    columName: 'total',
     columnType: ColumnType.CURRENCY,
-    label: 'Price',
+    label: 'Total',
     alignment: 'Right',
   },
   {
     columName: 'createdAt',
     columnType: ColumnType.DATE,
     label: 'Created At',
+    alignment: 'Left',
+  },
+  {
+    columName: 'updatedAt',
+    columnType: ColumnType.DATE,
+    label: 'Updated At',
     alignment: 'Left',
   },
 ];

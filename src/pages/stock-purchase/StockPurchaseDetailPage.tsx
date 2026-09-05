@@ -293,7 +293,7 @@ function StockPurchaseDetailPage() {
                   url={`${BASE_API_URL}/stock-purchase/${id}/detail`}
                   columns={StockPurchaseItemColumn}
                   dataKey="id"
-                  responseKey="stockPurchaseItems"
+                  responseKey="stockPurchaseDetail"
                 />
               )}
             </>

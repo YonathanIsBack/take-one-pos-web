@@ -27,4 +27,5 @@ export interface Column {
   label: string;
   alignment?: 'Left' | 'Right' | 'Center';
   option?: ColumnOption;
+  parentKey?: string;
 }
