@@ -66,6 +66,7 @@ function StockPurchaseDetailPage() {
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+  const [successModal, setSuccessModal] = useState({ open: false, message: '' });
   const [items, setItems] = useState<ItemOption[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemOption | null>(null);
   const [itemForm, setItemForm] = useState({
@@ -152,6 +153,28 @@ function StockPurchaseDetailPage() {
       console.error('Failed to fetch stock purchase item detail:', error);
     } finally {
       setDetailLoading(false);
+    }
+  };
+
+  const handleDelete = async (stockPurchaseItem: StockPurchaseItem) => {
+    setSubmitting(true);
+    try {
+      const response = await fetchWithAuth(
+        `${BASE_API_URL}/stock-purchase/${id}/detail/${stockPurchaseItem.id}`,
+        { method: 'DELETE' }
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessModal({ open: true, message: data.message });
+        setRefreshKey((prev) => prev + 1);
+      } else {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+      }
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -448,6 +471,7 @@ function StockPurchaseDetailPage() {
                       responseKey="stockPurchaseDetail"
                       onDetail={handleDetail}
                       onEdit={handleEdit}
+                      onDelete={handleDelete}
                       refreshKey={refreshKey}
                     />
                   )}
@@ -463,6 +487,13 @@ function StockPurchaseDetailPage() {
         onClose={() => setErrorModal({ open: false, message: '' })}
         title="Error"
         message={errorModal.message}
+      />
+
+      <DialogModal
+        open={successModal.open}
+        onClose={() => setSuccessModal({ open: false, message: '' })}
+        title="Success"
+        message={successModal.message}
       />
     </Box>
   );
