@@ -51,6 +51,17 @@ const StockPurchaseItemColumn: Column[] = [
     label: 'Updated At',
     alignment: 'Left',
   },
+  {
+    columName: 'action',
+    columnType: ColumnType.ACTION,
+    label: 'Action',
+    alignment: 'Right',
+    option: {
+      detail: true,
+      edit: true,
+      delete: true,
+    },
+  },
 ];
 
 export default StockPurchaseItemColumn;
