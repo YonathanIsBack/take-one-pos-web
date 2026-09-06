@@ -4,6 +4,11 @@ import {
   Box,
   Button,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Skeleton,
   Tab,
   Tabs,
@@ -24,6 +29,8 @@ interface StockPurchaseDetail {
   id: number;
   purchaseDate: string;
   status: string;
+  totalQuantity: number;
+  totalPrice: string | number;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -58,6 +65,11 @@ interface StockPurchaseItemDetail {
   };
 }
 
+interface StockPurchaseOperation {
+  operationName: string;
+  operationDisplayName: string;
+}
+
 function StockPurchaseDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<StockPurchaseDetail | null>(null);
@@ -78,6 +90,8 @@ function StockPurchaseDetailPage() {
   const [detailLoading, setDetailLoading] = useState(false);
   const [editingDetailId, setEditingDetailId] = useState<number | null>(null);
   const [editingRowVersion, setEditingRowVersion] = useState<number | null>(null);
+  const [operations, setOperations] = useState<StockPurchaseOperation[]>([]);
+  const [confirmOperation, setConfirmOperation] = useState<StockPurchaseOperation | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const cogs = parseFloat(itemForm.buyingPrice || '0') + parseFloat(itemForm.additionalCost || '0');
@@ -109,8 +123,43 @@ function StockPurchaseDetailPage() {
     }
   }, [showForm]);
 
+  useEffect(() => {
+    fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}/operation`)
+      .then((response) => response.json())
+      .then((data) => {
+        setOperations(data.operations);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch operations:', error);
+      });
+  }, [id, refreshKey]);
+
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+  };
+
+  const handleOperation = async (operationName: string) => {
+    setSubmitting(true);
+    try {
+      const response = await fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}/operation`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ operationName }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+        return;
+      }
+
+      setSuccessModal({ open: true, message: data.message });
+      setRefreshKey((prev) => prev + 1);
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleDetail = async (stockPurchaseItem: StockPurchaseItem) => {
@@ -247,6 +296,20 @@ function StockPurchaseDetailPage() {
               </Typography>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                Total Quantity
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.totalQuantity ?? '-'}
+              </Typography>
+
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                Total Price
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.totalPrice != null ? formatToCurrency(item.totalPrice) : '-'}
+              </Typography>
+
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Created At
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
@@ -262,6 +325,27 @@ function StockPurchaseDetailPage() {
             </>
           )}
         </Box>
+
+        {operations.length > 0 && (
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+              Operations
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              {operations.map((operation) => (
+                <Button
+                  key={operation.operationName}
+                  variant="contained"
+                  onClick={() => setConfirmOperation(operation)}
+                  disabled={submitting}
+                  sx={{ bgcolor: 'var(--color-primary)', '&:hover': { bgcolor: 'var(--color-primary-hover)' } }}
+                >
+                  {operation.operationDisplayName}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+        )}
 
         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
@@ -481,6 +565,33 @@ function StockPurchaseDetailPage() {
           )}
         </Box>
       </Box>
+
+      <Dialog open={confirmOperation !== null} onClose={() => setConfirmOperation(null)}>
+        <DialogTitle>Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to {confirmOperation?.operationDisplayName}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setConfirmOperation(null)} disabled={submitting}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              if (confirmOperation) {
+                handleOperation(confirmOperation.operationName);
+                setConfirmOperation(null);
+              }
+            }}
+            disabled={submitting}
+            autoFocus
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <DialogModal
         open={errorModal.open}
