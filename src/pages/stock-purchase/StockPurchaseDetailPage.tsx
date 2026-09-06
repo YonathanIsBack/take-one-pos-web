@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
+import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
 import StockPurchaseItemColumn from '../../table-columns/StockPurchaseItemColumn';
@@ -290,13 +291,6 @@ function StockPurchaseDetailPage() {
               </Typography>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Status
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {item?.status ?? '-'}
-              </Typography>
-
-              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Total Quantity
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
@@ -311,18 +305,16 @@ function StockPurchaseDetailPage() {
               </Typography>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Created At
+                Status
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
-                {item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : '-'}
+                {item?.status ?? '-'}
               </Typography>
 
-              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Updated At
-              </Typography>
-              <Typography variant="body1">
-                {item?.updatedAt ? new Date(item.updatedAt).toLocaleDateString() : '-'}
-              </Typography>
+              <TimeInformation
+                createdAt={item?.createdAt ?? ''}
+                updatedAt={item?.updatedAt ?? null}
+              />
             </>
           )}
         </Box>

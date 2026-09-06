@@ -1,5 +1,5 @@
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Button, CircularProgress, TextField } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -14,7 +14,6 @@ function StockPurchaseFormPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     purchaseDate: null as dayjs.Dayjs | null,
-    status: '',
   });
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
@@ -27,7 +26,6 @@ function StockPurchaseFormPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           purchaseDate: form.purchaseDate?.toISOString(),
-          status: form.status,
         }),
       });
 
@@ -74,15 +72,6 @@ function StockPurchaseFormPage() {
           onChange={(newValue) => setForm({ ...form, purchaseDate: newValue })}
           disabled={loading}
           sx={{ mb: 2, width: '100%' }}
-        />
-        <TextField
-          fullWidth
-          label="Status"
-          name="status"
-          value={form.status}
-          onChange={(e) => setForm({ ...form, status: e.target.value })}
-          disabled={loading}
-          sx={{ mb: 2 }}
         />
         <Button
           variant="contained"
