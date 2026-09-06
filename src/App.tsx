@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './commons/Layout';
 import RoutePath from './constants/RoutePath';
 import ItemDetailPage from './pages/item/ItemDetailPage';
@@ -6,6 +6,7 @@ import ItemEditPage from './pages/item/ItemEditPage';
 import ItemFormPage from './pages/item/ItemFormPage';
 import ItemPage from './pages/item/ItemPage';
 import LoginPage from './pages/LoginPage';
+import NotFoundPage from './pages/NotFoundPage';
 import StockPurchaseDetailPage from './pages/stock-purchase/StockPurchaseDetailPage';
 import StockPurchaseEditPage from './pages/stock-purchase/StockPurchaseEditPage';
 import StockPurchaseFormPage from './pages/stock-purchase/StockPurchaseFormPage';
@@ -27,7 +28,7 @@ function App() {
           <Route path="/stock-purchase/:id" element={<StockPurchaseDetailPage />} />
           <Route path="/stock-purchase/:id/edit" element={<StockPurchaseEditPage />} />
           <Route path={RoutePath.USER} element={<UserPage />} />
-          <Route path="*" element={<Navigate to={RoutePath.LOGIN} replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
