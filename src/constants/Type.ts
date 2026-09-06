@@ -2,6 +2,9 @@ export interface Item {
   [key: string]: unknown;
   id: number;
   name: string;
+  quantityOnHand: number;
+  quantityOnHold: number;
+  quantitySellable: number;
   createdAt: string;
   updatedAt: string | null;
 }

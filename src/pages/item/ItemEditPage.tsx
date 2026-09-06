@@ -12,6 +12,7 @@ function ItemEditPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [item, setItem] = useState({ name: '' });
+  const [rowversion, setRowversion] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
@@ -28,6 +29,7 @@ function ItemEditPage() {
       .then((data) => {
         if (data) {
           setItem({ name: data.item.name });
+          setRowversion(data.item.rowversion);
           setLoading(false);
         }
       })
@@ -46,7 +48,7 @@ function ItemEditPage() {
       const response = await fetchWithAuth(`${API_ITEM}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: item.name }),
+        body: JSON.stringify({ name: item.name, rowversion }),
       });
 
       const data = await response.json();
