@@ -31,6 +31,7 @@ interface StockPurchaseDetail {
   status: string;
   totalQuantity: number;
   totalPrice: string | number;
+  rowversion: string;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -108,7 +109,7 @@ function StockPurchaseDetailPage() {
         console.error('Failed to fetch stock purchase:', error);
         setLoading(false);
       });
-  }, [id]);
+  }, [id, refreshKey]);
 
   useEffect(() => {
     if (showForm) {
@@ -144,7 +145,7 @@ function StockPurchaseDetailPage() {
       const response = await fetchWithAuth(`${BASE_API_URL}/stock-purchase/${id}/operation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ operationName }),
+        body: JSON.stringify({ rowversion: item?.rowversion, operationName }),
       });
       const data = await response.json();
 
