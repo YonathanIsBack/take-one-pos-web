@@ -14,6 +14,7 @@ import StockPurchasePage from './pages/stock-purchase/StockPurchasePage';
 import SalesPage from './pages/sales/SalesPage';
 import SalesFormPage from './pages/sales/SalesFormPage';
 import SalesDetailPage from './pages/sales/SalesDetailPage';
+import SalesEditPage from './pages/sales/SalesEditPage';
 import UserPage from './pages/UserPage';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path={RoutePath.SALES} element={<SalesPage />} />
           <Route path={RoutePath.SALES_NEW} element={<SalesFormPage />} />
           <Route path="/sales/:id" element={<SalesDetailPage />} />
+          <Route path="/sales/:id/edit" element={<SalesEditPage />} />
           <Route path={RoutePath.USER} element={<UserPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
