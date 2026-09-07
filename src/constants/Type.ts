@@ -44,4 +44,5 @@ export interface Column {
   alignment?: 'Left' | 'Right' | 'Center';
   option?: ColumnOption;
   parentKey?: string;
+  flex?: number;
 }

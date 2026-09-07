@@ -56,7 +56,7 @@ function StockPurchasePage() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Stock Purchase" />
-      <Box sx={{ px: 3, py: 2 }}>
+      <Box sx={{ px: 3, pt: 2 }}>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -66,17 +66,19 @@ function StockPurchasePage() {
           New Stock Purchase
         </Button>
       </Box>
-      <TableData<StockPurchase>
-        url={`${BASE_API_URL}/stock-purchase`}
-        columns={StockPurchaseColumn}
-        onDetail={handleDetail}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        dataKey="id"
-        disabled={loading}
-        refreshKey={refreshKey}
-        responseKey="stockPurchases"
-      />
+      <Box sx={{ flex: 1, mt: 2, mx: 3, mb: 3, minHeight: 0 }}>
+        <TableData<StockPurchase>
+          url={`${BASE_API_URL}/stock-purchase`}
+          columns={StockPurchaseColumn}
+          onDetail={handleDetail}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          dataKey="id"
+          disabled={loading}
+          refreshKey={refreshKey}
+          responseKey="stockPurchases"
+        />
+      </Box>
 
       <DialogModal
         open={successModal.open}

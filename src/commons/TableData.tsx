@@ -69,17 +69,24 @@ function TableData<T extends Record<string, unknown>>({
     );
   }
 
-  const renderCell = (column: Column, item: T, width: string) => {
+  const totalFlex = columns.reduce((sum, col) => sum + (col.flex ?? 1), 0);
+
+  const renderCell = (column: Column, item: T, flex: number, isLastColumn: boolean) => {
     const camelCaseKey = convertToCamelCase(column.columName);
     const source = column.parentKey ? (item[column.parentKey] as Record<string, unknown>) : item;
     const value = source?.[camelCaseKey];
     const alignment = column.alignment?.toLowerCase() as 'left' | 'right' | 'center';
+    const widthPct = `${(flex / totalFlex) * 100}%`;
+    const cellSx = {
+      width: widthPct,
+      borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
+    };
 
     switch (column.columnType) {
       case ColumnType.TEXT:
-        return <TableRowText value={String(value ?? '')} alignment={alignment} sx={{ width }} />;
+        return <TableRowText value={String(value ?? '')} alignment={alignment} sx={cellSx} />;
       case ColumnType.DATE:
-        return <TableRowDate value={String(value ?? '')} alignment={alignment} sx={{ width }} />;
+        return <TableRowDate value={String(value ?? '')} alignment={alignment} sx={cellSx} />;
       case ColumnType.ACTION:
         return (
           <TableRowAction
@@ -90,17 +97,15 @@ function TableData<T extends Record<string, unknown>>({
             onEdit={() => onEdit?.(item)}
             onDelete={() => onDelete?.(item)}
             alignment={alignment}
-            sx={{ width }}
+            sx={cellSx}
           />
         );
       case ColumnType.CURRENCY:
-        return <TableRowCurrency value={value as string | number} sx={{ width }} />;
+        return <TableRowCurrency value={value as string | number} sx={cellSx} />;
       default:
-        return <TableCell align={alignment} sx={{ width }}>{String(value ?? '')}</TableCell>;
+        return <TableCell align={alignment} sx={cellSx}>{String(value ?? '')}</TableCell>;
     }
   };
-
-  const columnWidth = `${100 / columns.length}%`;
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0, position: 'relative' }}>
@@ -122,36 +127,56 @@ function TableData<T extends Record<string, unknown>>({
           <CircularProgress />
         </Box>
       )}
-      <TableContainer sx={{ flex: '0 0 auto' }}>
+      <TableContainer sx={{ flex: 1, overflow: 'auto' }}>
         <Table sx={{ tableLayout: 'fixed' }}>
           <TableHead>
-            <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.columName}
-                  align="center"
-                  sx={{ fontWeight: 'bold', fontSize: '1.1rem', width: columnWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
+            <TableRow
+              sx={{
+                bgcolor: 'var(--color-secondary)',
+                position: 'sticky',
+                top: 0,
+                zIndex: 2,
+                boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
+              }}
+            >
+              {columns.map((column, colIndex) => {
+                const flex = column.flex ?? 1;
+                const isLastColumn = colIndex === columns.length - 1;
+                return (
+                  <TableCell
+                    key={column.columName}
+                    align="center"
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: '0.85rem',
+                      letterSpacing: '0.03em',
+                      color: 'var(--color-primary)',
+                      width: `${(flex / totalFlex) * 100}%`,
+                      borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
+                    }}
+                  >
+                    {column.label}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>
+          <TableBody>
+            {data.map((item, index) => (
+              <TableRow
+                key={String(item[dataKey])}
+                sx={{
+                  bgcolor: index % 2 === 0 ? 'var(--color-white)' : 'var(--color-bg-warm)',
+                  '&:hover': { bgcolor: 'var(--color-neutral-muted)' },
+                  transition: 'background-color 0.15s ease',
+                }}
+              >
+                {columns.map((column, colIndex) => renderCell(column, item, column.flex ?? 1, colIndex === columns.length - 1))}
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ flex: 1, overflow: 'auto' }}>
-        <TableContainer>
-          <Table sx={{ tableLayout: 'fixed' }}>
-            <TableBody>
-              {data.map((item) => (
-                <TableRow key={String(item[dataKey])}>
-                  {columns.map((column) => renderCell(column, item, columnWidth))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
     </Box>
   );
 }

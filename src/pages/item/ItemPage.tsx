@@ -56,7 +56,7 @@ function ItemPage() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Item Management" />
-      <Box sx={{ px: 3, py: 2 }}>
+      <Box sx={{ px: 3, pt: 2 }}>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -66,16 +66,18 @@ function ItemPage() {
           New Item
         </Button>
       </Box>
-      <TableData<Item>
-        url={API_ITEM}
-        columns={ItemColumn}
-        onDetail={handleDetail}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        dataKey="id"
-        disabled={loading}
-        refreshKey={refreshKey}
-      />
+      <Box sx={{ flex: 1, mt: 2, mx: 3, mb: 3, minHeight: 0 }}>
+        <TableData<Item>
+          url={API_ITEM}
+          columns={ItemColumn}
+          onDetail={handleDetail}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          dataKey="id"
+          disabled={loading}
+          refreshKey={refreshKey}
+        />
+      </Box>
 
       <DialogModal
         open={successModal.open}
