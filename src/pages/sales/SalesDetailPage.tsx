@@ -1,4 +1,4 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TimeInformation from '../../commons/TimeInformation';
@@ -27,7 +27,7 @@ function SalesDetailPage() {
     fetchWithAuth(`${API_SALES}/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        setSale(data.sale);
+        setSale(data.sales);
         setLoading(false);
       })
       .catch((error) => {
@@ -50,13 +50,6 @@ function SalesDetailPage() {
         ) : (
           <>
             <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-              Order Date
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {sale?.orderDate ? new Date(sale.orderDate).toLocaleDateString() : '-'}
-            </Typography>
-
-            <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
               Customer Name
             </Typography>
             <Typography variant="body1" sx={{ mb: 3 }}>
@@ -64,18 +57,65 @@ function SalesDetailPage() {
             </Typography>
 
             <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-              Payment Date
+              Address
             </Typography>
             <Typography variant="body1" sx={{ mb: 3 }}>
-              {sale?.paymentDate ? new Date(sale.paymentDate).toLocaleDateString() : '-'}
+              {sale?.address ?? '-'}
             </Typography>
 
-            <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-              Delivery Date
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 3 }}>
-              {sale?.deliveryDate ? new Date(sale.deliveryDate).toLocaleDateString() : '-'}
-            </Typography>
+            <Divider sx={{ my: 3 }}>
+              <Typography variant="overline" sx={{ px: 1, color: 'grey.600' }}>
+                Sales Information
+              </Typography>
+            </Divider>
+
+            <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Order Date
+                </Typography>
+                <Typography variant="body1">
+                  {sale?.orderDate ? new Date(sale.orderDate).toLocaleDateString() : '-'}
+                </Typography>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Payment Date
+                </Typography>
+                <Typography variant="body1">
+                  {sale?.paymentDate ? new Date(sale.paymentDate).toLocaleDateString() : '-'}
+                </Typography>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Delivery Date
+                </Typography>
+                <Typography variant="body1">
+                  {sale?.deliveryDate ? new Date(sale.deliveryDate).toLocaleDateString() : '-'}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Total Item
+                </Typography>
+                <Typography variant="body1">0</Typography>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Total Discount
+                </Typography>
+                <Typography variant="body1">0</Typography>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Total Price
+                </Typography>
+                <Typography variant="body1">0</Typography>
+              </Box>
+            </Box>
 
             <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
               Status
