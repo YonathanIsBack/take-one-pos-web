@@ -18,6 +18,19 @@ export interface StockPurchase {
   updatedAt: string | null;
 }
 
+export interface Sale {
+  [key: string]: unknown;
+  id: number;
+  orderDate: string;
+  paymentDate: string;
+  deliveryDate: string;
+  customerName: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
 export interface ColumnOption {
   detail?: boolean;
   edit?: boolean;

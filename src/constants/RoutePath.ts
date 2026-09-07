@@ -9,6 +9,8 @@ const RoutePath = {
   STOCK_PURCHASE_DETAIL: (id: string | number) => `/stock-purchase/${id}`,
   STOCK_PURCHASE_EDIT: (id: string | number) => `/stock-purchase/${id}/edit`,
   SALES: '/sales',
+  SALES_DETAIL: (id: string | number) => `/sales/${id}`,
+  SALES_EDIT: (id: string | number) => `/sales/${id}/edit`,
   REPORT: '/report',
   HPP_CALCULATOR: '/hpp-calculator',
   USER: '/user',
