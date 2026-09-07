@@ -1,4 +1,5 @@
-import { Box } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Button } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
@@ -23,6 +24,10 @@ function SalesPage() {
 
   const handleEdit = (sale: Sale) => {
     navigate(RoutePath.SALES_EDIT(sale.id));
+  };
+
+  const handleNewSales = () => {
+    navigate(RoutePath.SALES_NEW);
   };
 
   const handleDelete = async (sale: Sale) => {
@@ -51,6 +56,16 @@ function SalesPage() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Sales" />
+      <Box sx={{ px: 3, pt: 2 }}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleNewSales}
+          sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+        >
+          New Sales
+        </Button>
+      </Box>
       <Box sx={{ flex: 1, mt: 2, mx: 3, mb: 3, minHeight: 0 }}>
         <TableData<Sale>
           url={API_SALES}
