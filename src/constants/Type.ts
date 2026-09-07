@@ -26,6 +26,7 @@ export interface Sale {
   deliveryDate: string;
   customerName: string;
   address: string;
+  status: string;
   createdAt: string;
   updatedAt: string | null;
   rowversion: number;

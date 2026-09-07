@@ -31,6 +31,13 @@ const SalesColumn: Column[] = [
     flex: 1.5,
   },
   {
+    columName: 'status',
+    columnType: ColumnType.TEXT,
+    label: 'Status',
+    alignment: 'Left',
+    flex: 1.5,
+  },
+  {
     columName: 'createdAt',
     columnType: ColumnType.DATE,
     label: 'Created At',
