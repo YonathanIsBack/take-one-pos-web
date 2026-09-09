@@ -46,12 +46,12 @@ function getSalesItemColumns(status: string): Column[] {
       columnType: ColumnType.ACTION,
       label: 'Action',
       alignment: 'Right',
-      flex: 2,
-      option: {
-        detail: true,
-        edit: isCreated,
-        delete: isCreated,
-      },
+    flex: 1,
+    option: {
+      detail: true,
+      edit: isCreated,
+      delete: isCreated,
+    },
     },
   ];
 }

@@ -42,7 +42,7 @@ const ItemColumn: Column[] = [
     columnType: ColumnType.ACTION,
     label: 'Action',
     alignment: 'Right',
-    flex: 2,
+    flex: 1,
     option: {
       detail: true,
       edit: true,

@@ -1,4 +1,7 @@
-import { Button, SxProps, TableCell } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, SxProps, TableCell, Tooltip } from '@mui/material';
 
 interface TableRowActionProps {
   detail?: boolean;
@@ -24,19 +27,25 @@ function TableRowAction({
   return (
     <TableCell align={alignment} sx={sx}>
       {detail && (
-        <Button variant="contained" size="small" onClick={onDetail} sx={{ mr: 1 }}>
-          Detail
-        </Button>
+        <Tooltip title="Detail">
+          <IconButton size="small" onClick={onDetail} sx={{ color: 'grey.600' }}>
+            <VisibilityIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       )}
       {edit && (
-        <Button variant="outlined" size="small" onClick={onEdit} sx={{ mr: deleteAction ? 1 : 0 }}>
-          Edit
-        </Button>
+        <Tooltip title="Edit">
+          <IconButton size="small" onClick={onEdit} sx={{ color: 'grey.600' }}>
+            <EditIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       )}
       {deleteAction && (
-        <Button variant="outlined" color="error" size="small" onClick={onDelete}>
-          Delete
-        </Button>
+        <Tooltip title="Delete">
+          <IconButton size="small" onClick={onDelete} sx={{ color: 'error.main' }}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
       )}
     </TableCell>
   );

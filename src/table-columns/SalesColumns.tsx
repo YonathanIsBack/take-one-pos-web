@@ -49,7 +49,7 @@ const SalesColumn: Column[] = [
     columnType: ColumnType.ACTION,
     label: 'Action',
     alignment: 'Right',
-    flex: 2,
+    flex: 1,
     option: (sales) => ({
       detail: true,
       edit: sales.status === 'CREATED',
