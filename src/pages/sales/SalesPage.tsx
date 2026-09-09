@@ -8,7 +8,6 @@ import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
 import { Sale } from '../../constants/Type';
 import { API_SALES } from '../../constants/Url';
-import fetchWithAuth from '../../utils/fetchWithAuth';
 import SalesColumn from '../../table-columns/SalesColumns';
 
 function SalesPage() {
@@ -30,29 +29,6 @@ function SalesPage() {
     navigate(RoutePath.SALES_NEW);
   };
 
-  const handleDelete = async (sale: Sale) => {
-    setLoading(true);
-    try {
-      const response = await fetchWithAuth(`${API_SALES}/${sale.id}`, {
-        method: 'DELETE',
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
-        return;
-      }
-
-      setSuccessModal({ open: true, message: data.message });
-      setRefreshKey((prev) => prev + 1);
-    } catch {
-      setErrorModal({ open: true, message: 'Something went wrong!' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Title titleText="Sales" />
@@ -72,7 +48,6 @@ function SalesPage() {
           columns={SalesColumn}
           onDetail={handleDetail}
           onEdit={handleEdit}
-          onDelete={handleDelete}
           dataKey="id"
           disabled={loading}
           refreshKey={refreshKey}

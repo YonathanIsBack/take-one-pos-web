@@ -50,11 +50,11 @@ const SalesColumn: Column[] = [
     label: 'Action',
     alignment: 'Right',
     flex: 2,
-    option: {
+    option: (sales) => ({
       detail: true,
-      edit: true,
-      delete: true,
-    },
+      edit: sales.status === 'CREATED',
+      delete: false,
+    }),
   },
 ];
 

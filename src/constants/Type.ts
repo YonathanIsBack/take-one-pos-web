@@ -43,7 +43,7 @@ export interface Column {
   columnType: string;
   label: string;
   alignment?: 'Left' | 'Right' | 'Center';
-  option?: ColumnOption;
+  option?: ColumnOption | ((item: Record<string, unknown>) => ColumnOption);
   parentKey?: string;
   flex?: number;
 }

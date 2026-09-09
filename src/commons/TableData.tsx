@@ -87,12 +87,13 @@ function TableData<T extends Record<string, unknown>>({
         return <TableRowText value={String(value ?? '')} alignment={alignment} sx={cellSx} />;
       case ColumnType.DATE:
         return <TableRowDate value={String(value ?? '')} alignment={alignment} sx={cellSx} />;
-      case ColumnType.ACTION:
+      case ColumnType.ACTION: {
+        const options = typeof column.option === 'function' ? column.option(item as Record<string, unknown>) : column.option;
         return (
           <TableRowAction
-            detail={column.option?.detail}
-            edit={column.option?.edit}
-            delete={column.option?.delete}
+            detail={options?.detail}
+            edit={options?.edit}
+            delete={options?.delete}
             onDetail={() => onDetail?.(item)}
             onEdit={() => onEdit?.(item)}
             onDelete={() => onDelete?.(item)}
@@ -100,6 +101,7 @@ function TableData<T extends Record<string, unknown>>({
             sx={cellSx}
           />
         );
+      }
       case ColumnType.CURRENCY:
         return <TableRowCurrency value={value as string | number} sx={cellSx} />;
       default:

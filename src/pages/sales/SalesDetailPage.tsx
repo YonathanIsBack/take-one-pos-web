@@ -23,7 +23,7 @@ import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
 import { API_SALES, API_ITEM, BASE_API_URL } from '../../constants/Url';
-import SalesItemColumn from '../../table-columns/SalesItemColumn';
+import getSalesItemColumns from '../../table-columns/SalesItemColumn';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 
 interface SaleDetail {
@@ -81,6 +81,8 @@ function SalesDetailPage() {
   const [selectedItem, setSelectedItem] = useState<ItemOption | null>(null);
   const [itemForm, setItemForm] = useState({ price: '', quantity: '1', discount: '0' });
   const [editingDetailId, setEditingDetailId] = useState<number | null>(null);
+  const [selectedDetail, setSelectedDetail] = useState<SaleItem | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   const totalPrice = (parseFloat(itemForm.price || '0') * parseInt(itemForm.quantity || '0')) - parseFloat(itemForm.discount || '0');
 
@@ -171,6 +173,19 @@ function SalesDetailPage() {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDetail = async (saleItem: SaleItem) => {
+    setDetailLoading(true);
+    try {
+      const response = await fetchWithAuth(`${API_SALES}/${id}/item/${saleItem.id}`);
+      const data = await response.json();
+      setSelectedDetail(data.salesItem);
+    } catch (error) {
+      console.error('Failed to fetch sales item detail:', error);
+    } finally {
+      setDetailLoading(false);
     }
   };
 
@@ -360,9 +375,78 @@ function SalesDetailPage() {
         </Box>
 
         <Box sx={{ flex: 1, overflow: 'auto', p: 3 }}>
-          {tabValue === 0 && (
-            <>
-              {showForm ? (
+        {tabValue === 0 && (
+          <>
+            {selectedDetail ? (
+              <Box>
+                {detailLoading ? (
+                  <CircularProgress />
+                ) : (
+                  <>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setSelectedDetail(null)}
+                      sx={{ mb: 2 }}
+                    >
+                      Back to List
+                    </Button>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Item Name
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 3 }}>
+                      {selectedDetail.item?.name ?? '-'}
+                    </Typography>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Price
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 3 }}>
+                      {selectedDetail.price ?? '-'}
+                    </Typography>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Quantity
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 3 }}>
+                      {selectedDetail.quantity}
+                    </Typography>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Discount
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 3 }}>
+                      {selectedDetail.discount ?? 0}
+                    </Typography>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Total Price
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 3 }}>
+                      {selectedDetail.totalPrice ?? 0}
+                    </Typography>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Created At
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 3 }}>
+                      {selectedDetail.createdAt
+                        ? new Date(selectedDetail.createdAt).toLocaleDateString()
+                        : '-'}
+                    </Typography>
+
+                    <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                      Updated At
+                    </Typography>
+                    <Typography variant="body1">
+                      {selectedDetail.updatedAt
+                        ? new Date(selectedDetail.updatedAt).toLocaleDateString()
+                        : '-'}
+                    </Typography>
+                  </>
+                )}
+              </Box>
+            ) : showForm ? (
                 <Box sx={{ position: 'relative' }}>
                   {submitting && (
                     <Box
@@ -453,24 +537,27 @@ function SalesDetailPage() {
                 </Box>
               ) : (
                 <>
-                  <Box sx={{ mb: 2 }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<SaveIcon />}
-                      onClick={() => {
-                        setEditingDetailId(null);
-                        setShowForm(true);
-                      }}
-                      sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
-                    >
-                      New Item
-                    </Button>
-                  </Box>
+                  {sale?.status === 'CREATED' && (
+                    <Box sx={{ mb: 2 }}>
+                      <Button
+                        variant="contained"
+                        startIcon={<SaveIcon />}
+                        onClick={() => {
+                          setEditingDetailId(null);
+                          setShowForm(true);
+                        }}
+                        sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+                      >
+                        New Item
+                      </Button>
+                    </Box>
+                  )}
                   <TableData<SaleItem>
                     url={`${API_SALES}/${id}/item`}
-                    columns={SalesItemColumn}
+                    columns={getSalesItemColumns(sale?.status ?? '')}
                     dataKey="id"
                     responseKey="salesItem"
+                    onDetail={handleDetail}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                     refreshKey={refreshKey}
