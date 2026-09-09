@@ -1,13 +1,13 @@
 import {
   Box,
   CircularProgress,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Column } from '../constants/Type';
@@ -61,15 +61,68 @@ function TableData<T extends Record<string, unknown>>({
       });
   }, [url, refreshKey, responseKey]);
 
+  const totalFlex = columns.reduce((sum, col) => sum + (col.flex ?? 1), 0);
+
   if (loading) {
     return (
-      <Box sx={{ flex: 1, overflow: 'auto' }}>
-        <Typography>Loading...</Typography>
+      <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+        <TableContainer sx={{ flex: 1, overflow: 'auto' }}>
+          <Table sx={{ tableLayout: 'fixed' }}>
+            <TableHead>
+              <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
+                {columns.map((column, colIndex) => {
+                  const flex = column.flex ?? 1;
+                  const isLastColumn = colIndex === columns.length - 1;
+                  return (
+                    <TableCell
+                      key={column.columName}
+                      align="center"
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: '0.85rem',
+                        letterSpacing: '0.03em',
+                        color: 'var(--color-primary)',
+                        width: `${(flex / totalFlex) * 100}%`,
+                        borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
+                      }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Array.from({ length: 5 }).map((_, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  sx={{
+                    bgcolor: rowIndex % 2 === 0 ? 'var(--color-white)' : 'var(--color-bg-warm)',
+                  }}
+                >
+                  {columns.map((column, colIndex) => {
+                    const flex = column.flex ?? 1;
+                    const isLastColumn = colIndex === columns.length - 1;
+                    return (
+                      <TableCell
+                        key={column.columName}
+                        sx={{
+                          width: `${(flex / totalFlex) * 100}%`,
+                          borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
+                        }}
+                      >
+                        <Skeleton variant="text" width="80%" />
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
     );
   }
-
-  const totalFlex = columns.reduce((sum, col) => sum + (col.flex ?? 1), 0);
 
   const renderCell = (column: Column, item: T, flex: number, isLastColumn: boolean) => {
     const camelCaseKey = convertToCamelCase(column.columName);
