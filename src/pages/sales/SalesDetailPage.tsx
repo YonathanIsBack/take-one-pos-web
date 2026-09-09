@@ -25,6 +25,7 @@ import Title from '../../commons/Title';
 import { API_SALES, API_ITEM, BASE_API_URL } from '../../constants/Url';
 import getSalesItemColumns from '../../table-columns/SalesItemColumn';
 import fetchWithAuth from '../../utils/fetchWithAuth';
+import formatToCurrency from '../../utils/formatToCurrency';
 
 interface SaleDetail {
   id: number;
@@ -47,6 +48,7 @@ interface SaleOperation {
 interface ItemOption {
   id: number;
   name: string;
+  quantitySellable: number;
 }
 
 interface SaleItem {
@@ -62,6 +64,7 @@ interface SaleItem {
   updatedAt: string | null;
   item: {
     name: string;
+    quantitySellable: number;
   };
 }
 
@@ -145,7 +148,7 @@ function SalesDetailPage() {
   };
 
   const handleEdit = async (saleItem: SaleItem) => {
-    setSelectedItem({ id: saleItem.itemId, name: saleItem.item.name });
+    setSelectedItem({ id: saleItem.itemId, name: saleItem.item.name, quantitySellable: saleItem.item.quantitySellable });
     setItemForm({
       price: String(saleItem.price),
       quantity: String(saleItem.quantity),
@@ -402,7 +405,7 @@ function SalesDetailPage() {
                       Price
                     </Typography>
                     <Typography variant="body1" sx={{ mb: 3 }}>
-                      {selectedDetail.price ?? '-'}
+                      {formatToCurrency(selectedDetail.price ?? 0)}
                     </Typography>
 
                     <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
@@ -416,14 +419,14 @@ function SalesDetailPage() {
                       Discount
                     </Typography>
                     <Typography variant="body1" sx={{ mb: 3 }}>
-                      {selectedDetail.discount ?? 0}
+                      {formatToCurrency(selectedDetail.discount ?? 0)}
                     </Typography>
 
                     <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                       Total Price
                     </Typography>
                     <Typography variant="body1" sx={{ mb: 3 }}>
-                      {selectedDetail.totalPrice ?? 0}
+                      {formatToCurrency(selectedDetail.totalPrice ?? 0)}
                     </Typography>
 
                     <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
@@ -466,21 +469,19 @@ function SalesDetailPage() {
                       <CircularProgress />
                     </Box>
                   )}
-                  <Autocomplete
-                    options={items}
-                    getOptionLabel={(option) => option.name}
-                    value={selectedItem}
-                    onChange={(_event, newValue) => setSelectedItem(newValue)}
-                    disabled={submitting}
-                    sx={{ mb: 2 }}
-                    renderInput={(params) => <TextField {...params} label="Item" />}
-                  />
+                <Autocomplete
+                  options={items}
+                  getOptionLabel={(option) => `${option.name} - Available Quantity ${option.quantitySellable}`}
+                  value={selectedItem}
+                  onChange={(_event, newValue) => setSelectedItem(newValue)}
+                  disabled={submitting}
+                  sx={{ mb: 2 }}
+                  renderInput={(params) => <TextField {...params} label="Item" />}
+                />
                 <TextField
                   fullWidth
                   label="Price"
-                  name="price"
-                  type="number"
-                  value={itemForm.price}
+                  value={formatToCurrency(itemForm.price || 0)}
                   disabled
                   sx={{ mb: 2 }}
                 />
@@ -504,13 +505,13 @@ function SalesDetailPage() {
                     disabled={submitting}
                     sx={{ mb: 2 }}
                   />
-                  <TextField
-                    fullWidth
-                    label="Total Price"
-                    value={totalPrice}
-                    disabled
-                    sx={{ mb: 2 }}
-                  />
+                <TextField
+                  fullWidth
+                  label="Total Price"
+                  value={formatToCurrency(totalPrice)}
+                  disabled
+                  sx={{ mb: 2 }}
+                />
                   <Box sx={{ display: 'flex', gap: 2 }}>
                     <Button
                       variant="contained"
