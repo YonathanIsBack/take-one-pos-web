@@ -36,6 +36,9 @@ interface SaleDetail {
   address: string;
   status: string;
   rowversion: number;
+  totalQuantity: number;
+  totalDiscount: number;
+  totalPrice: number;
   createdAt: string;
   updatedAt: string | null;
 }
@@ -314,26 +317,26 @@ function SalesDetailPage() {
                 </Box>
               </Box>
 
-              <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                    Total Item
-                  </Typography>
-                  <Typography variant="body1">0</Typography>
-                </Box>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                    Total Discount
-                  </Typography>
-                  <Typography variant="body1">0</Typography>
-                </Box>
-                <Box sx={{ flex: 1 }}>
-                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                    Total Price
-                  </Typography>
-                  <Typography variant="body1">0</Typography>
-                </Box>
+            <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Total Item
+                </Typography>
+                <Typography variant="body1">{sale?.totalQuantity ?? 0}</Typography>
               </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Total Discount
+                </Typography>
+                <Typography variant="body1">{formatToCurrency(sale?.totalDiscount ?? 0)}</Typography>
+              </Box>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                  Total Price
+                </Typography>
+                <Typography variant="body1">{formatToCurrency(sale?.totalPrice ?? 0)}</Typography>
+              </Box>
+            </Box>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
                 Status
