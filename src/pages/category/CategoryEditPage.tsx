@@ -12,6 +12,7 @@ function CategoryEditPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: '' });
+  const [rowversion, setRowversion] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
@@ -29,6 +30,7 @@ function CategoryEditPage() {
         if (data) {
           const category = data.category ?? data;
           setForm({ name: category.name });
+          setRowversion(category.rowversion);
           setLoading(false);
         }
       })
@@ -47,7 +49,7 @@ function CategoryEditPage() {
       const response = await fetchWithAuth(`${API_CATEGORY}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name }),
+        body: JSON.stringify({ name: form.name, rowversion }),
       });
       const data = await response.json();
       if (!response.ok) {

@@ -38,6 +38,7 @@ export interface Category {
   name: string;
   createdAt: string;
   updatedAt: string | null;
+  rowversion: number;
 }
 
 export interface ColumnOption {
