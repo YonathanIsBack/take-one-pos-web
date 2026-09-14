@@ -16,7 +16,9 @@ import TableRowAction from './TableRowAction';
 import TableRowCurrency from './TableRowCurrency';
 import TableRowDate from './TableRowDate';
 import TableRowText from './TableRowText';
+import TableRowImage from './TableRowImage';
 import ColumnType from '../constants/ColumnType';
+import { BASE_API_URL } from '../constants/Url';
 
 interface TableDataProps<T> {
   url: string;
@@ -157,6 +159,8 @@ function TableData<T extends Record<string, unknown>>({
       }
       case ColumnType.CURRENCY:
         return <TableRowCurrency value={value as string | number} sx={cellSx} />;
+      case ColumnType.IMAGE:
+        return <TableRowImage value="Preview" src={`${BASE_API_URL}/${String(value ?? '')}`} sx={cellSx} />;
       default:
         return <TableCell align={alignment} sx={cellSx}>{String(value ?? '')}</TableCell>;
     }

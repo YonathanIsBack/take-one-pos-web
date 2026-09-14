@@ -21,6 +21,7 @@ import { BASE_API_URL } from '../../constants/Url';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 import formatToCurrency from '../../utils/formatToCurrency';
 import PriceHistoryColumn from '../../table-columns/PriceHistoryColumn';
+import ItemImageColumn from '../../table-columns/ItemImageColumn';
 
 interface ItemDetail {
   id: number;
@@ -189,6 +190,7 @@ function ItemDetailPage() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Price History" />
+            <Tab label="Images" />
           </Tabs>
         </Box>
 
@@ -292,6 +294,14 @@ function ItemDetailPage() {
                 />
               )}
             </>
+          )}
+          {tabValue === 1 && (
+            <TableData
+              url={`${BASE_API_URL}/items/${id}/image`}
+              columns={ItemImageColumn}
+              dataKey="id"
+              responseKey="images"
+            />
           )}
         </Box>
       </Box>
