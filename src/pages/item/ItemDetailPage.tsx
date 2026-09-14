@@ -25,6 +25,7 @@ import PriceHistoryColumn from '../../table-columns/PriceHistoryColumn';
 interface ItemDetail {
   id: number;
   name: string;
+  category: { id: number; name: string } | Record<string, never>;
   quantityOnHand: number;
   quantityOnHold: number;
   quantitySellable: number;
@@ -133,6 +134,13 @@ function ItemDetailPage() {
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
                 {item?.name}
+              </Typography>
+
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                Category
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {item?.category?.name || '-'}
               </Typography>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>

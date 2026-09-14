@@ -10,6 +10,14 @@ const ItemColumn: Column[] = [
     flex: 3,
   },
   {
+    columName: 'name',
+    columnType: ColumnType.TEXT,
+    label: 'Category',
+    alignment: 'Left',
+    parentKey: 'category',
+    flex: 2,
+  },
+  {
     columName: 'quantityOnHand',
     columnType: ColumnType.TEXT,
     label: 'On Hand',
