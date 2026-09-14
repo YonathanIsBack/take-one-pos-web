@@ -1,18 +1,26 @@
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Button, CircularProgress, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Autocomplete, Box, Button, CircularProgress, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
-import { API_ITEM } from '../../constants/Url';
+import { API_CATEGORY, API_ITEM } from '../../constants/Url';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 
 function ItemFormPage() {
   const navigate = useNavigate();
-  const [item, setItem] = useState({ name: '' });
+  const [item, setItem] = useState({ name: '', categoryId: '' });
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+
+  useEffect(() => {
+    fetchWithAuth(API_CATEGORY)
+      .then((res) => res.json())
+      .then((data) => setCategories(data.categories ?? data))
+      .catch(() => {});
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setItem({ ...item, [e.target.name]: e.target.value });
@@ -24,7 +32,7 @@ function ItemFormPage() {
       const response = await fetchWithAuth(API_ITEM, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: item.name }),
+        body: JSON.stringify({ name: item.name, categoryId: item.categoryId || null }),
       });
 
       const data = await response.json();
@@ -70,6 +78,15 @@ function ItemFormPage() {
           name="name"
           value={item.name}
           onChange={handleChange}
+          disabled={loading}
+          sx={{ mb: 2 }}
+        />
+        <Autocomplete
+          options={categories}
+          getOptionLabel={(option) => option.name}
+          isOptionEqualToValue={(option, value) => option.id === Number(value.id)}
+          onChange={(_e, value) => setItem({ ...item, categoryId: value ? String(value.id) : '' })}
+          renderInput={(params) => <TextField {...params} label="Category" />}
           disabled={loading}
           sx={{ mb: 2 }}
         />
