@@ -1,4 +1,4 @@
-import { Box, Link, SxProps, TableCell } from '@mui/material';
+import { Box, Link, Popper, SxProps, TableCell } from '@mui/material';
 import { useState } from 'react';
 
 interface TableRowImageProps {
@@ -8,39 +8,35 @@ interface TableRowImageProps {
 }
 
 function TableRowImage({ value, src, sx }: TableRowImageProps) {
-  const [hover, setHover] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   return (
-    <TableCell sx={{ ...sx, position: 'relative' }}>
+    <TableCell sx={sx}>
       <Link
         href={src}
         target="_blank"
         rel="noopener noreferrer"
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        sx={{ cursor: 'pointer', position: 'relative' }}
+        onMouseEnter={(e) => setAnchorEl(e.currentTarget)}
+        onMouseLeave={() => setAnchorEl(null)}
+        sx={{ cursor: 'pointer' }}
       >
         {value}
-        {hover && (
-          <Box
-            component="img"
-            src={src}
-            sx={{
-              position: 'absolute',
-              bottom: '100%',
-              left: 0,
-              maxWidth: 200,
-              maxHeight: 200,
-              border: '1px solid #ccc',
-              borderRadius: 1,
-              bgcolor: 'white',
-              boxShadow: 2,
-              zIndex: 10,
-              pointerEvents: 'none',
-            }}
-          />
-        )}
       </Link>
+      <Popper open={!!anchorEl} anchorEl={anchorEl} placement="top" sx={{ zIndex: 1300 }}>
+        <Box
+          component="img"
+          src={src}
+          sx={{
+            maxWidth: 200,
+            maxHeight: 200,
+            border: '1px solid #ccc',
+            borderRadius: 1,
+            bgcolor: 'white',
+            boxShadow: 2,
+            pointerEvents: 'none',
+          }}
+        />
+      </Popper>
     </TableCell>
   );
 }
