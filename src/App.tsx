@@ -11,6 +11,10 @@ import StockPurchaseDetailPage from './pages/stock-purchase/StockPurchaseDetailP
 import StockPurchaseEditPage from './pages/stock-purchase/StockPurchaseEditPage';
 import StockPurchaseFormPage from './pages/stock-purchase/StockPurchaseFormPage';
 import StockPurchasePage from './pages/stock-purchase/StockPurchasePage';
+import CategoryPage from './pages/category/CategoryPage';
+import CategoryFormPage from './pages/category/CategoryFormPage';
+import CategoryDetailPage from './pages/category/CategoryDetailPage';
+import CategoryEditPage from './pages/category/CategoryEditPage';
 import SalesPage from './pages/sales/SalesPage';
 import SalesFormPage from './pages/sales/SalesFormPage';
 import SalesDetailPage from './pages/sales/SalesDetailPage';
@@ -31,6 +35,10 @@ function App() {
           <Route path={RoutePath.STOCK_PURCHASE_NEW} element={<StockPurchaseFormPage />} />
           <Route path="/stock-purchase/:id" element={<StockPurchaseDetailPage />} />
           <Route path="/stock-purchase/:id/edit" element={<StockPurchaseEditPage />} />
+          <Route path={RoutePath.CATEGORY} element={<CategoryPage />} />
+          <Route path={RoutePath.CATEGORY_NEW} element={<CategoryFormPage />} />
+          <Route path="/category/:id" element={<CategoryDetailPage />} />
+          <Route path="/category/:id/edit" element={<CategoryEditPage />} />
           <Route path={RoutePath.SALES} element={<SalesPage />} />
           <Route path={RoutePath.SALES_NEW} element={<SalesFormPage />} />
           <Route path="/sales/:id" element={<SalesDetailPage />} />

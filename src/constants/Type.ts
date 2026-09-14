@@ -32,6 +32,14 @@ export interface Sale {
   rowversion: number;
 }
 
+export interface Category {
+  [key: string]: unknown;
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
 export interface ColumnOption {
   detail?: boolean;
   edit?: boolean;
