@@ -21,6 +21,7 @@ export interface StockPurchase {
 export interface Sale {
   [key: string]: unknown;
   id: number;
+  transactionCode: string | null;
   orderDate: string;
   paymentDate: string;
   deliveryDate: string;

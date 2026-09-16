@@ -3,6 +3,13 @@ import { Column } from '../constants/Type';
 
 const SalesColumn: Column[] = [
   {
+    columName: 'transactionCode',
+    columnType: ColumnType.TEXT,
+    label: 'Transaction Code',
+    alignment: 'Left',
+    flex: 2,
+  },
+  {
     columName: 'orderDate',
     columnType: ColumnType.DATE,
     label: 'Order Date',

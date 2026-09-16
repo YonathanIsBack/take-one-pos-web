@@ -29,6 +29,7 @@ import formatToCurrency from '../../utils/formatToCurrency';
 
 interface SaleDetail {
   id: number;
+  transactionCode: string | null;
   orderDate: string;
   paymentDate: string;
   deliveryDate: string;
@@ -275,6 +276,13 @@ function SalesDetailPage() {
               </Typography>
               <Typography variant="body1" sx={{ mb: 3 }}>
                 {sale?.customerName ?? '-'}
+              </Typography>
+
+              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                Transaction Code
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {sale?.transactionCode ?? '-'}
               </Typography>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
