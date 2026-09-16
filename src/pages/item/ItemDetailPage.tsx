@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
   Skeleton,
   Tab,
   Tabs,
@@ -16,6 +15,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
+import ImagePreview from '../../commons/ImagePreview';
 import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
@@ -84,7 +84,6 @@ function ItemDetailPage() {
   const [imageRefreshKey, setImageRefreshKey] = useState(0);
   const [selectedImageDetail, setSelectedImageDetail] = useState<ItemImageDetail | null>(null);
   const [imageDetailLoading, setImageDetailLoading] = useState(false);
-  const [imagePopupOpen, setImagePopupOpen] = useState(false);
 
   useEffect(() => {
     fetchWithAuth(`${BASE_API_URL}/items/${id}`)
@@ -409,19 +408,7 @@ function ItemDetailPage() {
                         {selectedImageDetail.imageSize} bytes
                       </Typography>
 
-                      <Box
-                        component="img"
-                        src={`${BASE_API_URL}/${selectedImageDetail.path}`}
-                        onClick={() => setImagePopupOpen(true)}
-                        sx={{
-                          maxWidth: 300,
-                          maxHeight: 300,
-                          border: '1px solid #ccc',
-                          borderRadius: 1,
-                          cursor: 'pointer',
-                          '&:hover': { opacity: 0.8 },
-                        }}
-                      />
+                      <ImagePreview src={`${BASE_API_URL}/${selectedImageDetail.path}`} />
 
                       <TimeInformation
                         createdAt={selectedImageDetail.createdAt}
@@ -512,14 +499,6 @@ function ItemDetailPage() {
         title="Error"
         message={errorModal.message}
       />
-
-      <Dialog open={imagePopupOpen} onClose={() => setImagePopupOpen(false)} maxWidth="lg">
-        <Box
-          component="img"
-          src={selectedImageDetail ? `${BASE_API_URL}/${selectedImageDetail.path}` : ''}
-          sx={{ maxWidth: '100%', maxHeight: '80vh' }}
-        />
-      </Dialog>
     </Box>
   );
 }
