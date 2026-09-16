@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Dialog,
   Skeleton,
   Tab,
   Tabs,
@@ -83,6 +84,7 @@ function ItemDetailPage() {
   const [imageRefreshKey, setImageRefreshKey] = useState(0);
   const [selectedImageDetail, setSelectedImageDetail] = useState<ItemImageDetail | null>(null);
   const [imageDetailLoading, setImageDetailLoading] = useState(false);
+  const [imagePopupOpen, setImagePopupOpen] = useState(false);
 
   useEffect(() => {
     fetchWithAuth(`${BASE_API_URL}/items/${id}`)
@@ -410,11 +412,14 @@ function ItemDetailPage() {
                       <Box
                         component="img"
                         src={`${BASE_API_URL}/${selectedImageDetail.path}`}
+                        onClick={() => setImagePopupOpen(true)}
                         sx={{
                           maxWidth: 300,
                           maxHeight: 300,
                           border: '1px solid #ccc',
                           borderRadius: 1,
+                          cursor: 'pointer',
+                          '&:hover': { opacity: 0.8 },
                         }}
                       />
 
@@ -507,6 +512,14 @@ function ItemDetailPage() {
         title="Error"
         message={errorModal.message}
       />
+
+      <Dialog open={imagePopupOpen} onClose={() => setImagePopupOpen(false)} maxWidth="lg">
+        <Box
+          component="img"
+          src={selectedImageDetail ? `${BASE_API_URL}/${selectedImageDetail.path}` : ''}
+          sx={{ maxWidth: '100%', maxHeight: '80vh' }}
+        />
+      </Dialog>
     </Box>
   );
 }
