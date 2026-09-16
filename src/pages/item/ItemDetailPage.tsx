@@ -121,6 +121,22 @@ function ItemDetailPage() {
     }
   };
 
+  const handleDeleteImage = async (image: { id: number }) => {
+    try {
+      const response = await fetchWithAuth(`${BASE_API_URL}/items/${id}/image/${image.id}`, {
+        method: 'DELETE',
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+        return;
+      }
+      setImageRefreshKey((prev) => prev + 1);
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    }
+  };
+
   const handleImageUpload = async () => {
     if (selectedFiles.length === 0) return;
     setUploading(true);
@@ -392,6 +408,7 @@ function ItemDetailPage() {
                   dataKey="id"
                   responseKey="images"
                   refreshKey={imageRefreshKey}
+                  onDelete={handleDeleteImage}
                 />
               )}
             </>
