@@ -1,3 +1,4 @@
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import SaveIcon from '@mui/icons-material/Save';
 import {
   Box,
@@ -64,6 +65,10 @@ function ItemDetailPage() {
     validFrom: null as dayjs.Dayjs | null,
     validTo: null as dayjs.Dayjs | null,
   });
+  const [showImageForm, setShowImageForm] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [imageRefreshKey, setImageRefreshKey] = useState(0);
 
   useEffect(() => {
     fetchWithAuth(`${BASE_API_URL}/items/${id}`)
@@ -113,6 +118,33 @@ function ItemDetailPage() {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleImageUpload = async () => {
+    if (selectedFiles.length === 0) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach((file) => {
+        formData.append('images', file);
+      });
+      const response = await fetchWithAuth(`${BASE_API_URL}/items/${id}/image`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+        return;
+      }
+      setShowImageForm(false);
+      setSelectedFiles([]);
+      setImageRefreshKey((prev) => prev + 1);
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -296,12 +328,73 @@ function ItemDetailPage() {
             </>
           )}
           {tabValue === 1 && (
-            <TableData
-              url={`${BASE_API_URL}/items/${id}/image`}
-              columns={ItemImageColumn}
-              dataKey="id"
-              responseKey="images"
-            />
+            <>
+              {!showImageForm && (
+                <Box sx={{ mb: 2 }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddPhotoAlternateIcon />}
+                    onClick={() => setShowImageForm(true)}
+                    sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+                  >
+                    New Image
+                  </Button>
+                </Box>
+              )}
+
+              {showImageForm ? (
+                <Box sx={{ position: 'relative' }}>
+                  {uploading && (
+                    <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                      bgcolor: 'rgba(255, 255, 255, 0.7)', display: 'flex', justifyContent: 'center',
+                      alignItems: 'center', zIndex: 10 }}>
+                      <CircularProgress />
+                    </Box>
+                  )}
+                  <Button variant="outlined" component="label" disabled={uploading} sx={{ mb: 2 }}>
+                    Select Images
+                    <input
+                      type="file"
+                      hidden
+                      multiple
+                      accept=".jpg,.jpeg,.png"
+                      onChange={(e) => setSelectedFiles(Array.from(e.target.files ?? []))}
+                    />
+                  </Button>
+                  {selectedFiles.length > 0 && (
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                      {selectedFiles.length} file(s) selected
+                    </Typography>
+                  )}
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                    <Button
+                      variant="contained"
+                      startIcon={<SaveIcon />}
+                      onClick={handleImageUpload}
+                      disabled={uploading || selectedFiles.length === 0}
+                      sx={{ bgcolor: 'green', '&:hover': { bgcolor: 'darkgreen' } }}
+                    >
+                      Upload
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => { setShowImageForm(false); setSelectedFiles([]); }}
+                      disabled={uploading}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </Box>
+              ) : (
+                <TableData
+                  url={`${BASE_API_URL}/items/${id}/image`}
+                  columns={ItemImageColumn}
+                  dataKey="id"
+                  responseKey="images"
+                  refreshKey={imageRefreshKey}
+                />
+              )}
+            </>
           )}
         </Box>
       </Box>
