@@ -1,6 +1,7 @@
 import {
   Box,
   CircularProgress,
+  InputAdornment,
   Skeleton,
   Table,
   TableBody,
@@ -8,7 +9,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { useEffect, useState } from 'react';
 import { Column } from '../constants/Type';
 import fetchWithAuth from '../utils/fetchWithAuth';
@@ -19,6 +22,7 @@ import TableRowText from './TableRowText';
 import TableRowImage from './TableRowImage';
 import ColumnType from '../constants/ColumnType';
 import { BASE_API_URL } from '../constants/Url';
+import useDebounce from '../hooks/useDebounce';
 
 interface TableDataProps<T> {
   url: string;
@@ -49,9 +53,14 @@ function TableData<T extends Record<string, unknown>>({
 }: TableDataProps<T>) {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
-    fetchWithAuth(url)
+    setLoading(true);
+    const separator = url.includes('?') ? '&' : '?';
+    const fetchUrl = debouncedSearch ? `${url}${separator}searchParam=${encodeURIComponent(debouncedSearch)}` : url;
+    fetchWithAuth(fetchUrl)
       .then((response) => response.json())
       .then((json) => {
         setData(json[responseKey]);
@@ -61,70 +70,9 @@ function TableData<T extends Record<string, unknown>>({
         console.error('Failed to fetch data:', error);
         setLoading(false);
       });
-  }, [url, refreshKey, responseKey]);
+  }, [url, refreshKey, responseKey, debouncedSearch]);
 
   const totalFlex = columns.reduce((sum, col) => sum + (col.flex ?? 1), 0);
-
-  if (loading) {
-    return (
-      <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-        <TableContainer sx={{ flex: 1, overflow: 'auto' }}>
-          <Table sx={{ tableLayout: 'fixed' }}>
-            <TableHead>
-              <TableRow sx={{ bgcolor: 'var(--color-secondary)' }}>
-                {columns.map((column, colIndex) => {
-                  const flex = column.flex ?? 1;
-                  const isLastColumn = colIndex === columns.length - 1;
-                  return (
-                    <TableCell
-                      key={column.columName}
-                      align="center"
-                      sx={{
-                        fontWeight: 600,
-                        fontSize: '0.85rem',
-                        letterSpacing: '0.03em',
-                        color: 'var(--color-primary)',
-                        width: `${(flex / totalFlex) * 100}%`,
-                        borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
-                      }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {Array.from({ length: 5 }).map((_, rowIndex) => (
-                <TableRow
-                  key={rowIndex}
-                  sx={{
-                    bgcolor: rowIndex % 2 === 0 ? 'var(--color-white)' : 'var(--color-bg-warm)',
-                  }}
-                >
-                  {columns.map((column, colIndex) => {
-                    const flex = column.flex ?? 1;
-                    const isLastColumn = colIndex === columns.length - 1;
-                    return (
-                      <TableCell
-                        key={column.columName}
-                        sx={{
-                          width: `${(flex / totalFlex) * 100}%`,
-                          borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
-                        }}
-                      >
-                        <Skeleton variant="text" width="80%" />
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
-    );
-  }
 
   const renderCell = (column: Column, item: T, flex: number, isLastColumn: boolean) => {
     const camelCaseKey = convertToCamelCase(column.columName);
@@ -186,6 +134,24 @@ function TableData<T extends Record<string, unknown>>({
           <CircularProgress />
         </Box>
       )}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+        <TextField
+          size="small"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            },
+          }}
+          sx={{ width: 250 }}
+        />
+      </Box>
       <TableContainer sx={{ flex: 1, overflow: 'auto' }}>
         <Table sx={{ tableLayout: 'fixed' }}>
           <TableHead>
@@ -221,18 +187,45 @@ function TableData<T extends Record<string, unknown>>({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item, index) => (
-              <TableRow
-                key={String(item[dataKey])}
-                sx={{
-                  bgcolor: index % 2 === 0 ? 'var(--color-white)' : 'var(--color-bg-warm)',
-                  '&:hover': { bgcolor: 'var(--color-neutral-muted)' },
-                  transition: 'background-color 0.15s ease',
-                }}
-              >
-                {columns.map((column, colIndex) => renderCell(column, item, column.flex ?? 1, colIndex === columns.length - 1))}
-              </TableRow>
-            ))}
+            {loading ? (
+              Array.from({ length: 5 }).map((_, rowIndex) => (
+                <TableRow
+                  key={rowIndex}
+                  sx={{
+                    bgcolor: rowIndex % 2 === 0 ? 'var(--color-white)' : 'var(--color-bg-warm)',
+                  }}
+                >
+                  {columns.map((column, colIndex) => {
+                    const flex = column.flex ?? 1;
+                    const isLastColumn = colIndex === columns.length - 1;
+                    return (
+                      <TableCell
+                        key={column.columName}
+                        sx={{
+                          width: `${(flex / totalFlex) * 100}%`,
+                          borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
+                        }}
+                      >
+                        <Skeleton variant="text" width="80%" />
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))
+            ) : (
+              data.map((item, index) => (
+                <TableRow
+                  key={String(item[dataKey])}
+                  sx={{
+                    bgcolor: index % 2 === 0 ? 'var(--color-white)' : 'var(--color-bg-warm)',
+                    '&:hover': { bgcolor: 'var(--color-neutral-muted)' },
+                    transition: 'background-color 0.15s ease',
+                  }}
+                >
+                  {columns.map((column, colIndex) => renderCell(column, item, column.flex ?? 1, colIndex === columns.length - 1))}
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
