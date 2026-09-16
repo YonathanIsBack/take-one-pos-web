@@ -6,7 +6,7 @@ const ItemImageColumn: Column[] = [
   { columName: 'imageSize', columnType: ColumnType.TEXT, label: 'Size', alignment: 'Right', flex: 1 },
   { columName: 'path', columnType: ColumnType.IMAGE, label: 'Preview', alignment: 'Left', flex: 1 },
   { columName: 'action', columnType: ColumnType.ACTION, label: 'Action', alignment: 'Right', flex: 1,
-    option: { delete: true } },
+    option: { detail: true, delete: true } },
 ];
 
 export default ItemImageColumn;
