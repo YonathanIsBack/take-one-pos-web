@@ -17,6 +17,7 @@ import { useParams } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import ImagePreview from '../../commons/ImagePreview';
 import TableData from '../../commons/TableData';
+import AuditTrailTable from '../../commons/AuditTrailTable';
 import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
@@ -267,6 +268,7 @@ function ItemDetailPage() {
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Price History" />
             <Tab label="Images" />
+            <Tab label="Audit Trail" />
           </Tabs>
         </Box>
 
@@ -489,6 +491,9 @@ function ItemDetailPage() {
                 </>
               )}
             </>
+          )}
+          {tabValue === 2 && (
+            <AuditTrailTable url={`${BASE_API_URL}/items/${id}/audit-trail`} />
           )}
         </Box>
       </Box>

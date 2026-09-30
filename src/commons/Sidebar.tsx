@@ -16,8 +16,8 @@ const menuSections = [
     title: 'Inventory',
     items: [
       { label: 'Item', path: RoutePath.ITEM, icon: <Inventory2Icon /> },
-      { label: 'Stock Purchase', path: RoutePath.STOCK_PURCHASE, icon: <WarehouseIcon /> },
       { label: 'Category', path: RoutePath.CATEGORY, icon: <CategoryIcon /> },
+      { label: 'Stock Purchase', path: RoutePath.STOCK_PURCHASE, icon: <WarehouseIcon /> },
     ],
   },
   {
