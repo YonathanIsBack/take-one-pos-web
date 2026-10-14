@@ -8,15 +8,18 @@ import RoutePath from '../../constants/RoutePath';
 import { API_CATEGORY, API_ITEM, BASE_API_URL } from '../../constants/Url';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 
+const descriptionPlaceholders = ['Describe the food', 'Create your description', 'Tell the world how tasty it is'];
+
 function ItemEditPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [item, setItem] = useState({ name: '', categoryId: '' });
+  const [item, setItem] = useState({ name: '', categoryId: '', description: '' });
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [rowversion, setRowversion] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+  const [placeholder] = useState(() => descriptionPlaceholders[Math.floor(Math.random() * descriptionPlaceholders.length)]);
 
   useEffect(() => {
     fetchWithAuth(`${BASE_API_URL}/items/${id}`)
@@ -29,7 +32,7 @@ function ItemEditPage() {
       })
       .then((data) => {
         if (data) {
-          setItem({ name: data.item.name, categoryId: data.item.categoryId ? String(data.item.categoryId) : '' });
+          setItem({ name: data.item.name, categoryId: data.item.categoryId ? String(data.item.categoryId) : '', description: data.item.description ?? '' });
           setRowversion(data.item.rowversion);
           setLoading(false);
         }
@@ -56,7 +59,7 @@ function ItemEditPage() {
       const response = await fetchWithAuth(`${API_ITEM}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: item.name, categoryId: item.categoryId || null, rowversion }),
+        body: JSON.stringify({ name: item.name, categoryId: item.categoryId || null, description: item.description, rowversion }),
       });
 
       const data = await response.json();
@@ -116,6 +119,18 @@ function ItemEditPage() {
               value={categories.find((c) => String(c.id) === item.categoryId) ?? null}
               onChange={(_e, value) => setItem({ ...item, categoryId: value ? String(value.id) : '' })}
               renderInput={(params) => <TextField {...params} label="Category" />}
+              disabled={submitting}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              label="Description"
+              name="description"
+              value={item.description}
+              onChange={handleChange}
+              placeholder={placeholder}
               disabled={submitting}
               sx={{ mb: 2 }}
             />

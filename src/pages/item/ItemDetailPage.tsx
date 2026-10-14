@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Divider,
   Skeleton,
   Tab,
   Tabs,
@@ -29,6 +30,7 @@ import ItemImageColumn from '../../table-columns/ItemImageColumn';
 interface ItemDetail {
   id: number;
   name: string;
+  description: string | null;
   category: { id: number; name: string } | Record<string, never>;
   quantityOnHand: number;
   quantityOnHold: number;
@@ -222,39 +224,69 @@ function ItemDetailPage() {
               </Typography>
 
               <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Quantity On Hand
+                Description
               </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {item?.quantityOnHand ?? '-'}
-              </Typography>
-
-              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Quantity On Hold
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {item?.quantityOnHold ?? '-'}
+              <Typography variant="body1" sx={{ mb: 3, whiteSpace: 'pre-wrap' }}>
+                {item?.description || '-'}
               </Typography>
 
-              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Quantity Sellable
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {item?.quantitySellable ?? '-'}
-              </Typography>
+              <Divider sx={{ my: 3 }}>
+                <Typography variant="caption" sx={{ px: 1, color: 'grey.600' }}>
+                  Quantity Information
+                </Typography>
+              </Divider>
 
-              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                COGS
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {formatToCurrency(item?.price?.cogs ?? 0)}
-              </Typography>
+              <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                    Quantity On Hand
+                  </Typography>
+                  <Typography variant="body1">
+                    {item?.quantityOnHand ?? '-'}
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                    Quantity On Hold
+                  </Typography>
+                  <Typography variant="body1">
+                    {item?.quantityOnHold ?? '-'}
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                    Quantity Sellable
+                  </Typography>
+                  <Typography variant="body1">
+                    {item?.quantitySellable ?? '-'}
+                  </Typography>
+                </Box>
+              </Box>
 
-              <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
-                Selling Price
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {formatToCurrency(item?.price?.sellingPrice ?? 0)}
-              </Typography>
+              <Divider sx={{ my: 3 }}>
+                <Typography variant="caption" sx={{ px: 1, color: 'grey.600' }}>
+                  Price Information
+                </Typography>
+              </Divider>
+
+              <Box sx={{ display: 'flex', gap: 4, mb: 3 }}>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                    COGS
+                  </Typography>
+                  <Typography variant="body1">
+                    {formatToCurrency(item?.price?.cogs ?? 0)}
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="caption" sx={{ color: 'grey.500', display: 'block', mb: 0.5 }}>
+                    Selling Price
+                  </Typography>
+                  <Typography variant="body1">
+                    {formatToCurrency(item?.price?.sellingPrice ?? 0)}
+                  </Typography>
+                </Box>
+              </Box>
 
               <TimeInformation
                 createdAt={item?.createdAt ?? ''}

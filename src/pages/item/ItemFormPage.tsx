@@ -8,12 +8,15 @@ import RoutePath from '../../constants/RoutePath';
 import { API_CATEGORY, API_ITEM } from '../../constants/Url';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 
+const descriptionPlaceholders = ['Describe the food', 'Create your description', 'Tell the world how tasty it is'];
+
 function ItemFormPage() {
   const navigate = useNavigate();
-  const [item, setItem] = useState({ name: '', categoryId: '' });
+  const [item, setItem] = useState({ name: '', categoryId: '', description: '' });
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+  const [placeholder] = useState(() => descriptionPlaceholders[Math.floor(Math.random() * descriptionPlaceholders.length)]);
 
   useEffect(() => {
     fetchWithAuth(API_CATEGORY)
@@ -32,7 +35,7 @@ function ItemFormPage() {
       const response = await fetchWithAuth(API_ITEM, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: item.name, categoryId: item.categoryId || null }),
+        body: JSON.stringify({ name: item.name, categoryId: item.categoryId || null, description: item.description }),
       });
 
       const data = await response.json();
@@ -87,6 +90,18 @@ function ItemFormPage() {
           isOptionEqualToValue={(option, value) => option.id === Number(value.id)}
           onChange={(_e, value) => setItem({ ...item, categoryId: value ? String(value.id) : '' })}
           renderInput={(params) => <TextField {...params} label="Category" />}
+          disabled={loading}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          fullWidth
+          multiline
+          rows={3}
+          label="Description"
+          name="description"
+          value={item.description}
+          onChange={handleChange}
+          placeholder={placeholder}
           disabled={loading}
           sx={{ mb: 2 }}
         />
