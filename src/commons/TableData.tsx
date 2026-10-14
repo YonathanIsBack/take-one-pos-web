@@ -20,6 +20,7 @@ import TableRowCurrency from './TableRowCurrency';
 import TableRowDate from './TableRowDate';
 import TableRowText from './TableRowText';
 import TableRowImage from './TableRowImage';
+import TableRowChecklist from './TableRowChecklist';
 import ColumnType from '../constants/ColumnType';
 import { BASE_API_URL } from '../constants/Url';
 import useDebounce from '../hooks/useDebounce';
@@ -30,6 +31,7 @@ interface TableDataProps<T> {
   onDetail?: (item: T) => void;
   onEdit?: (item: T) => void;
   onDelete?: (item: T) => void;
+  onChecklist?: (item: T, value: number) => void;
   dataKey: keyof T;
   disabled?: boolean;
   refreshKey?: number;
@@ -46,6 +48,7 @@ function TableData<T extends Record<string, unknown>>({
   onDetail,
   onEdit,
   onDelete,
+  onChecklist,
   dataKey,
   disabled,
   refreshKey,
@@ -109,6 +112,14 @@ function TableData<T extends Record<string, unknown>>({
         return <TableRowCurrency value={value as string | number} sx={cellSx} />;
       case ColumnType.IMAGE:
         return <TableRowImage value="Preview" src={`${BASE_API_URL}/${String(value ?? '')}`} sx={cellSx} />;
+      case ColumnType.CHECKLIST:
+        return (
+          <TableRowChecklist
+            checked={Number(value) === 1}
+            onChange={() => onChecklist?.(item, Number(value) === 1 ? 0 : 1)}
+            sx={cellSx}
+          />
+        );
       default:
         return <TableCell align={alignment} sx={cellSx}>{String(value ?? '')}</TableCell>;
     }

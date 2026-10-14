@@ -139,6 +139,24 @@ function ItemDetailPage() {
     }
   };
 
+  const handleChecklistThumbnail = async (image: { id: number; rowversion?: number }, value: number) => {
+    try {
+      const response = await fetchWithAuth(`${BASE_API_URL}/items/${id}/image/${image.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isThumbnail: value, rowversion: image.rowversion ?? null }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        setErrorModal({ open: true, message: data.message || 'Something went wrong!' });
+        return;
+      }
+      setImageRefreshKey((prev) => prev + 1);
+    } catch {
+      setErrorModal({ open: true, message: 'Something went wrong!' });
+    }
+  };
+
   const handleDeleteImage = async (image: { id: number }) => {
     try {
       const response = await fetchWithAuth(`${BASE_API_URL}/items/${id}/image/${image.id}`, {
@@ -518,6 +536,7 @@ function ItemDetailPage() {
                       refreshKey={imageRefreshKey}
                       onDetail={handleDetailImage}
                       onDelete={handleDeleteImage}
+                      onChecklist={handleChecklistThumbnail}
                     />
                   )}
                 </>

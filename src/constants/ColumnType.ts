@@ -3,6 +3,7 @@ const ColumnType = {
   CURRENCY: 'CURRENCY',
   DATE: 'DATE',
   IMAGE: 'IMAGE',
+  CHECKLIST: 'CHECKLIST',
   ACTION: 'ACTION',
 };
 
