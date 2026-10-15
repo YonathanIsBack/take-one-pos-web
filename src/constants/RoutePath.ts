@@ -19,6 +19,7 @@ const RoutePath = {
   REPORT: '/report',
   HPP_CALCULATOR: '/hpp-calculator',
   USER: '/user',
+  USER_DETAIL: (id: string | number) => `/user/${id}`,
 } as const;
 
 export default RoutePath;

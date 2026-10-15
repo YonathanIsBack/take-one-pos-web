@@ -20,6 +20,7 @@ import SalesFormPage from './pages/sales/SalesFormPage';
 import SalesDetailPage from './pages/sales/SalesDetailPage';
 import SalesEditPage from './pages/sales/SalesEditPage';
 import UserPage from './pages/UserPage';
+import UserDetailPage from './pages/UserDetailPage';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/sales/:id" element={<SalesDetailPage />} />
           <Route path="/sales/:id/edit" element={<SalesEditPage />} />
           <Route path={RoutePath.USER} element={<UserPage />} />
+          <Route path="/user/:id" element={<UserDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

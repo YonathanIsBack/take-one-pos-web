@@ -42,6 +42,18 @@ export interface Category {
   rowversion: number;
 }
 
+export interface User {
+  [key: string]: unknown;
+  id: number;
+  displayName: string;
+  username: string;
+  isActive: number;
+  lastLogin: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
 export interface ColumnOption {
   detail?: boolean;
   edit?: boolean;
