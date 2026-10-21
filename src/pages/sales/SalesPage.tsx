@@ -12,8 +12,6 @@ import SalesColumn from '../../table-columns/SalesColumns';
 
 function SalesPage() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [refreshKey, setRefreshKey] = useState(0);
   const [successModal, setSuccessModal] = useState({ open: false, message: '' });
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
 
@@ -49,8 +47,6 @@ function SalesPage() {
           onDetail={handleDetail}
           onEdit={handleEdit}
           dataKey="id"
-          disabled={loading}
-          refreshKey={refreshKey}
           responseKey="sales"
         />
       </Box>

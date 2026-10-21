@@ -12,7 +12,11 @@ import fetchWithAuth from '../../utils/fetchWithAuth';
 
 function SalesFormPage() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    orderDate: dayjs.Dayjs | null;
+    customerName: string;
+    address: string;
+  }>({
     orderDate: dayjs(),
     customerName: '',
     address: '',

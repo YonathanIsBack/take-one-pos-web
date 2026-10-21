@@ -58,7 +58,7 @@ function SalesEditPage() {
         return;
       }
 
-      navigate(RoutePath.SALES_DETAIL(id));
+      navigate(RoutePath.SALES_DETAIL(id!));
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
