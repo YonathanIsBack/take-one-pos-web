@@ -180,7 +180,7 @@ function TableData<T extends Record<string, unknown>>({
                 const isLastColumn = colIndex === columns.length - 1;
                 return (
                   <TableCell
-                    key={column.columName}
+                    key={`${column.columName}-${colIndex}`}
                     align="center"
                     sx={{
                       fontWeight: 600,
@@ -211,7 +211,7 @@ function TableData<T extends Record<string, unknown>>({
                     const isLastColumn = colIndex === columns.length - 1;
                     return (
                       <TableCell
-                        key={column.columName}
+                        key={`${column.columName}-${colIndex}`}
                         sx={{
                           width: `${(flex / totalFlex) * 100}%`,
                           borderRight: isLastColumn ? 'none' : '1px solid var(--color-neutral-muted)',
