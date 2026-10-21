@@ -79,7 +79,7 @@ function ItemDetailPage() {
     cogs: '',
     sellingPrice: '',
     validFrom: null as dayjs.Dayjs | null,
-    validTo: null as dayjs.Dayjs | null,
+    validTo: dayjs('2099-12-31') as dayjs.Dayjs | null,
   });
   const [showImageForm, setShowImageForm] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -88,7 +88,9 @@ function ItemDetailPage() {
   const [selectedImageDetail, setSelectedImageDetail] = useState<ItemImageDetail | null>(null);
   const [imageDetailLoading, setImageDetailLoading] = useState(false);
 
-  useEffect(() => {
+  const [priceHistoryRefreshKey, setPriceHistoryRefreshKey] = useState(0);
+
+  const fetchItem = () => {
     fetchWithAuth(`${BASE_API_URL}/items/${id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -99,6 +101,10 @@ function ItemDetailPage() {
         console.error('Failed to fetch item:', error);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchItem();
   }, [id]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -131,7 +137,9 @@ function ItemDetailPage() {
       }
 
       setShowForm(false);
-      setPriceHistoryForm({ cogs: '', sellingPrice: '', validFrom: null, validTo: null });
+      setPriceHistoryForm({ cogs: '', sellingPrice: '', validFrom: null, validTo: dayjs('2099-12-31') });
+      fetchItem();
+      setPriceHistoryRefreshKey((prev) => prev + 1);
     } catch {
       setErrorModal({ open: true, message: 'Something went wrong!' });
     } finally {
@@ -418,7 +426,8 @@ function ItemDetailPage() {
                   url={`${BASE_API_URL}/items/${id}/price/history`}
                   columns={PriceHistoryColumn}
                   dataKey="id"
-                   responseKey="priceHistory"
+                  responseKey="priceHistory"
+                  refreshKey={priceHistoryRefreshKey}
                 />
               )}
             </>
