@@ -99,7 +99,7 @@ function LoginPage() {
         )}
         <Box
           component="img"
-          src="/images/logo.jpg"
+          src={`${import.meta.env.BASE_URL}images/logo.jpg`}
           alt="Logo"
           sx={{ mb: 3, width: 64, height: 64 }}
         />
