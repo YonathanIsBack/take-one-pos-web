@@ -19,9 +19,13 @@ Create a `.env` file in the project root:
 
 ```
 VITE_API_URL=https://your-api-url.com
+VITE_BASE_PATH=/
 ```
 
-If not set, requests will use relative URLs.
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_URL` | Base URL for the API | empty string (relative URLs) |
+| `VITE_BASE_PATH` | Base path for the app | `/` |
 
 ## Development
 
@@ -35,16 +39,16 @@ npm run dev
 npm run build
 ```
 
-To override the API URL at build time:
+To override env variables at build time:
 
 ```powershell
-$env:VITE_API_URL="https://your-api-url.com"; npm run build
+$env:VITE_API_URL="https://your-api-url.com"; $env:VITE_BASE_PATH="/pos/"; npm run build
 ```
 
 Or on bash:
 
 ```bash
-VITE_API_URL=https://your-api-url.com npm run build
+VITE_API_URL=https://your-api-url.com VITE_BASE_PATH=/pos/ npm run build
 ```
 
 ## Preview Production Build

@@ -24,7 +24,7 @@ import UserDetailPage from './pages/UserDetailPage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.VITE_BASE_PATH || '/'}>
       <Routes>
         <Route path={RoutePath.LOGIN} element={<LoginPage />} />
         <Route element={<Layout />}>
