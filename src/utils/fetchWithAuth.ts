@@ -14,7 +14,7 @@ function fetchWithAuth(input: RequestInfo, init?: RequestInit): Promise<Response
       localStorage.removeItem('token');
       localStorage.removeItem('username');
       localStorage.removeItem('displayName');
-      window.location.href = RoutePath.LOGIN;
+      window.location.href = `${import.meta.env.BASE_URL}${RoutePath.LOGIN.replace(/^\//, '')}`;
     }
     return response;
   });
