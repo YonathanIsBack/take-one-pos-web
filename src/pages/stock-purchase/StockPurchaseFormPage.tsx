@@ -68,6 +68,7 @@ function StockPurchaseFormPage() {
         )}
         <DatePicker
           label="Purchase Date"
+          format="DD/MM/YYYY"
           value={form.purchaseDate}
           onChange={(newValue) => setForm({ ...form, purchaseDate: newValue })}
           disabled={loading}

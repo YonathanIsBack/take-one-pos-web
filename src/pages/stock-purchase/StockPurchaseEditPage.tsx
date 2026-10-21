@@ -97,6 +97,7 @@ function StockPurchaseEditPage() {
             )}
             <DatePicker
               label="Purchase Date"
+              format="DD/MM/YYYY"
               value={purchaseDate}
               onChange={(newValue) => setPurchaseDate(newValue)}
               disabled={submitting}

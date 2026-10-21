@@ -80,6 +80,7 @@ function SalesFormPage() {
         )}
         <DatePicker
           label="Order Date"
+          format="DD/MM/YYYY"
           value={form.orderDate}
           onChange={(newValue) => setForm({ ...form, orderDate: newValue })}
           disabled={loading}

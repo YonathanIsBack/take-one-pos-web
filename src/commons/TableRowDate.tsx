@@ -7,7 +7,7 @@ interface TableRowDateProps {
   sx?: SxProps;
 }
 
-function TableRowDate({ value, format = 'MM/DD/YYYY', alignment = 'left', sx }: TableRowDateProps) {
+function TableRowDate({ value, format = 'DD/MM/YYYY', alignment = 'left', sx }: TableRowDateProps) {
   const date = new Date(value);
   const isValid = !isNaN(date.getTime());
 

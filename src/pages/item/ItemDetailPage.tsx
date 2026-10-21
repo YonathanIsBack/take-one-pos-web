@@ -386,6 +386,7 @@ function ItemDetailPage() {
                   />
                   <DatePicker
                     label="Valid From"
+                    format="DD/MM/YYYY"
                     value={priceHistoryForm.validFrom}
                     onChange={(newValue) =>
                       setPriceHistoryForm({ ...priceHistoryForm, validFrom: newValue })
@@ -395,6 +396,7 @@ function ItemDetailPage() {
                   />
                   <DatePicker
                     label="Valid To"
+                    format="DD/MM/YYYY"
                     value={priceHistoryForm.validTo}
                     onChange={(newValue) =>
                       setPriceHistoryForm({ ...priceHistoryForm, validTo: newValue })
