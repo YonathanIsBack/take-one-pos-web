@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import DatePickerField from '../../commons/DatePickerField';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -384,7 +384,7 @@ function ItemDetailPage() {
                     disabled={submitting}
                     sx={{ mb: 2 }}
                   />
-                  <DatePicker
+                  <DatePickerField
                     label="Valid From"
                     format="DD/MM/YYYY"
                     value={priceHistoryForm.validFrom}
@@ -394,7 +394,7 @@ function ItemDetailPage() {
                     disabled={submitting}
                     sx={{ mb: 2, width: '100%' }}
                   />
-                  <DatePicker
+                  <DatePickerField
                     label="Valid To"
                     format="DD/MM/YYYY"
                     value={priceHistoryForm.validTo}

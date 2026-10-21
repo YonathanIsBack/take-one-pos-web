@@ -1,6 +1,6 @@
 import SaveIcon from '@mui/icons-material/Save';
 import { Box, Button, CircularProgress } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import DatePickerField from '../../commons/DatePickerField';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -66,7 +66,7 @@ function StockPurchaseFormPage() {
             <CircularProgress />
           </Box>
         )}
-        <DatePicker
+        <DatePickerField
           label="Purchase Date"
           format="DD/MM/YYYY"
           value={form.purchaseDate}
