@@ -66,6 +66,7 @@ interface SaleItem {
   totalPrice: number;
   createdAt: string;
   updatedAt: string | null;
+  rowversion: number;
   item: {
     name: string;
     quantitySellable: number;
@@ -86,7 +87,7 @@ function SalesDetailPage() {
   const [showForm, setShowForm] = useState(false);
   const [items, setItems] = useState<ItemOption[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemOption | null>(null);
-  const [itemForm, setItemForm] = useState({ price: '', quantity: '1', discount: '0' });
+  const [itemForm, setItemForm] = useState({ price: '', quantity: '1', discount: '0', rowversion: 0 });
   const [editingDetailId, setEditingDetailId] = useState<number | null>(null);
   const [selectedDetail, setSelectedDetail] = useState<SaleItem | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -157,6 +158,7 @@ function SalesDetailPage() {
       price: String(saleItem.price),
       quantity: String(saleItem.quantity),
       discount: String(saleItem.discount),
+      rowversion: saleItem.rowversion,
     });
     setEditingDetailId(saleItem.id);
     setShowForm(true);
@@ -224,7 +226,7 @@ function SalesDetailPage() {
 
       setShowForm(false);
       setSelectedItem(null);
-      setItemForm({ price: '', quantity: '1', discount: '0' });
+      setItemForm({ price: '', quantity: '1', discount: '0', rowversion: 0 });
       setEditingDetailId(null);
       setRefreshKey((prev) => prev + 1);
     } catch {
@@ -539,7 +541,7 @@ function SalesDetailPage() {
                     onClick={() => {
                       setShowForm(false);
                       setSelectedItem(null);
-                      setItemForm({ price: '', quantity: '1', discount: '0' });
+                      setItemForm({ price: '', quantity: '1', discount: '0', rowversion: 0 });
                       setEditingDetailId(null);
                     }}
                       disabled={submitting}
