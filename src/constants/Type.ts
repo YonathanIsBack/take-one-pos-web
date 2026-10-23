@@ -54,6 +54,17 @@ export interface User {
   rowversion: number;
 }
 
+export interface PaymentChannel {
+  [key: string]: unknown;
+  id: number;
+  channelName: string;
+  accountNumber: string;
+  accountHolderName: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
 export interface ColumnOption {
   detail?: boolean;
   edit?: boolean;

@@ -7,11 +7,18 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import CategoryIcon from '@mui/icons-material/Category';
+import PaymentIcon from '@mui/icons-material/Payment';
 import { Box, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import RoutePath from '../constants/RoutePath';
 
 const menuSections = [
+  {
+    title: 'Master',
+    items: [
+      { label: 'Payment Channel', path: RoutePath.PAYMENT_CHANNEL, icon: <PaymentIcon /> },
+    ],
+  },
   {
     title: 'Inventory',
     items: [

@@ -21,6 +21,10 @@ import SalesDetailPage from './pages/sales/SalesDetailPage';
 import SalesEditPage from './pages/sales/SalesEditPage';
 import UserPage from './pages/UserPage';
 import UserDetailPage from './pages/UserDetailPage';
+import PaymentChannelPage from './pages/payment-channel/PaymentChannelPage';
+import PaymentChannelFormPage from './pages/payment-channel/PaymentChannelFormPage';
+import PaymentChannelDetailPage from './pages/payment-channel/PaymentChannelDetailPage';
+import PaymentChannelEditPage from './pages/payment-channel/PaymentChannelEditPage';
 
 function App() {
   return (
@@ -46,6 +50,10 @@ function App() {
           <Route path="/sales/:id/edit" element={<SalesEditPage />} />
           <Route path={RoutePath.USER} element={<UserPage />} />
           <Route path="/user/:id" element={<UserDetailPage />} />
+          <Route path={RoutePath.PAYMENT_CHANNEL} element={<PaymentChannelPage />} />
+          <Route path={RoutePath.PAYMENT_CHANNEL_NEW} element={<PaymentChannelFormPage />} />
+          <Route path="/payment-channel/:id" element={<PaymentChannelDetailPage />} />
+          <Route path="/payment-channel/:id/edit" element={<PaymentChannelEditPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

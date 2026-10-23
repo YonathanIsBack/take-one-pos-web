@@ -20,6 +20,10 @@ const RoutePath = {
   HPP_CALCULATOR: '/hpp-calculator',
   USER: '/user',
   USER_DETAIL: (id: string | number) => `/user/${id}`,
+  PAYMENT_CHANNEL: '/payment-channel',
+  PAYMENT_CHANNEL_NEW: '/payment-channel/form',
+  PAYMENT_CHANNEL_DETAIL: (id: string | number) => `/payment-channel/${id}`,
+  PAYMENT_CHANNEL_EDIT: (id: string | number) => `/payment-channel/${id}/edit`,
 } as const;
 
 export default RoutePath;
