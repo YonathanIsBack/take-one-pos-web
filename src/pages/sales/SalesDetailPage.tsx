@@ -211,6 +211,7 @@ function SalesDetailPage() {
           quantity: parseInt(itemForm.quantity),
           discount: parseFloat(itemForm.discount),
           totalPrice,
+          rowversion: sale?.rowversion,
         }),
       });
 
