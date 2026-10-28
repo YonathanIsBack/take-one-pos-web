@@ -2,6 +2,7 @@ import {
   Box,
   CircularProgress,
   InputAdornment,
+  Pagination,
   Skeleton,
   Table,
   TableBody,
@@ -25,8 +26,9 @@ import ColumnType from '../constants/ColumnType';
 import { BASE_API_URL } from '../constants/Url';
 import useDebounce from '../hooks/useDebounce';
 
-interface TableDataProps<T> {
-  url: string;
+const PAGE_SIZE = 10;
+
+interface TableDataProps<T> {  url: string;
   columns: Column[];
   onDetail?: (item: T) => void;
   onEdit?: (item: T) => void;
@@ -57,23 +59,27 @@ function TableData<T extends Record<string, unknown>>({
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
     setLoading(true);
     const separator = url.includes('?') ? '&' : '?';
-    const fetchUrl = debouncedSearch ? `${url}${separator}searchParam=${encodeURIComponent(debouncedSearch)}` : url;
+    const searchParam = debouncedSearch ? `&searchParam=${encodeURIComponent(debouncedSearch)}` : '';
+    const fetchUrl = `${url}${separator}page=${page}&limit=${PAGE_SIZE}${searchParam}`;
     fetchWithAuth(fetchUrl)
       .then((response) => response.json())
       .then((json) => {
         setData(json[responseKey]);
+        setTotalPages(json.pagination?.totalPages ?? 1);
         setLoading(false);
       })
       .catch((error) => {
         console.error('Failed to fetch data:', error);
         setLoading(false);
       });
-  }, [url, refreshKey, responseKey, debouncedSearch]);
+  }, [url, refreshKey, responseKey, debouncedSearch, page]);
 
   const totalFlex = columns.reduce((sum, col) => sum + (col.flex ?? 1), 0);
 
@@ -145,12 +151,22 @@ function TableData<T extends Record<string, unknown>>({
           <CircularProgress />
         </Box>
       )}
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(_event, newPage) => setPage(newPage)}
+          color="primary"
+          shape="rounded"
+        />
         <TextField
           size="small"
           placeholder="Search..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
           slotProps={{
             input: {
               startAdornment: (
