@@ -18,11 +18,13 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import DatePickerField from '../../commons/DatePickerField';
 import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
-import { API_SALES, API_ITEM, BASE_API_URL } from '../../constants/Url';
+import { API_SALES, API_ITEM, API_PAYMENT_CHANNEL, BASE_API_URL } from '../../constants/Url';
 import getSalesItemColumns from '../../table-columns/SalesItemColumn';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 import formatToCurrency from '../../utils/formatToCurrency';
@@ -53,6 +55,13 @@ interface ItemOption {
   id: number;
   name: string;
   quantitySellable: number;
+}
+
+interface PaymentChannelOption {
+  id: number;
+  channelName: string;
+  accountNumber: string;
+  accountHolderName: string;
 }
 
 interface SaleItem {
@@ -91,6 +100,14 @@ function SalesDetailPage() {
   const [editingDetailId, setEditingDetailId] = useState<number | null>(null);
   const [selectedDetail, setSelectedDetail] = useState<SaleItem | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [paymentChannels, setPaymentChannels] = useState<PaymentChannelOption[]>([]);
+  const [paymentForm, setPaymentForm] = useState({
+    referenceNo: '',
+    paymentDate: null as dayjs.Dayjs | null,
+    paymentChannel: null as PaymentChannelOption | null,
+  });
+
+  const isPayOperation = confirmOperation?.operationName === 'pay';
 
   const totalPrice = (parseFloat(itemForm.price || '0') * parseInt(itemForm.quantity || '0')) - parseFloat(itemForm.discount || '0');
 
@@ -117,6 +134,19 @@ function SalesDetailPage() {
         console.error('Failed to fetch operations:', error);
       });
   }, [id, refreshKey]);
+
+  useEffect(() => {
+    if (isPayOperation) {
+      fetchWithAuth(API_PAYMENT_CHANNEL)
+        .then((response) => response.json())
+        .then((data) => {
+          setPaymentChannels(data.paymentChannels);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch payment channels:', error);
+        });
+    }
+  }, [isPayOperation]);
 
   useEffect(() => {
     if (showForm) {
@@ -236,13 +266,17 @@ function SalesDetailPage() {
     }
   };
 
-  const handleOperation = async (operationName: string) => {
+  const handleOperation = async (operationName: string, additionalInformation?: Record<string, unknown>) => {
     setSubmitting(true);
     try {
       const response = await fetchWithAuth(`${API_SALES}/${id}/operation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rowversion: sale?.rowversion, operationName }),
+        body: JSON.stringify({
+          rowversion: sale?.rowversion,
+          operationName,
+          ...(additionalInformation ? { additionalInformation } : {}),
+        }),
       });
       const data = await response.json();
 
@@ -584,12 +618,56 @@ function SalesDetailPage() {
         </Box>
       </Box>
 
-      <Dialog open={confirmOperation !== null} onClose={() => setConfirmOperation(null)}>
+      <Dialog open={confirmOperation !== null} onClose={() => setConfirmOperation(null)} fullWidth maxWidth="sm">
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText sx={{ mb: isPayOperation ? 2 : 0 }}>
             Are you sure you want to {confirmOperation?.operationDisplayName}?
           </DialogContentText>
+          {isPayOperation && (
+            <>
+              <TextField
+                fullWidth
+                label="Reference No"
+                value={paymentForm.referenceNo}
+                onChange={(e) => setPaymentForm({ ...paymentForm, referenceNo: e.target.value })}
+                disabled={submitting}
+                sx={{ mb: 2 }}
+              />
+              <DatePickerField
+                label="Payment Date"
+                format="DD/MM/YYYY"
+                value={paymentForm.paymentDate}
+                onChange={(newValue) => setPaymentForm({ ...paymentForm, paymentDate: newValue })}
+                disabled={submitting}
+                sx={{ mb: 2, width: '100%' }}
+              />
+              <Autocomplete
+                options={paymentChannels}
+                getOptionLabel={(option) => option.channelName}
+                value={paymentForm.paymentChannel}
+                onChange={(_event, newValue) =>
+                  setPaymentForm({ ...paymentForm, paymentChannel: newValue })
+                }
+                disabled={submitting}
+                sx={{ mb: 2 }}
+                renderInput={(params) => <TextField {...params} label="Payment Channel" />}
+              />
+              <TextField
+                fullWidth
+                label="Account Number"
+                value={paymentForm.paymentChannel?.accountNumber ?? ''}
+                disabled
+                sx={{ mb: 2 }}
+              />
+              <TextField
+                fullWidth
+                label="Account Holder Name"
+                value={paymentForm.paymentChannel?.accountHolderName ?? ''}
+                disabled
+              />
+            </>
+          )}
         </DialogContent>
         <DialogActions>
           <Button variant="outlined" onClick={() => setConfirmOperation(null)} disabled={submitting}>
@@ -599,8 +677,19 @@ function SalesDetailPage() {
             variant="contained"
             onClick={() => {
               if (confirmOperation) {
-                handleOperation(confirmOperation.operationName);
+                const additionalInformation = isPayOperation
+                  ? {
+                      referenceNo: paymentForm.referenceNo,
+                      paymentDate: paymentForm.paymentDate?.toISOString() ?? null,
+                      paymentChannel: paymentForm.paymentChannel?.channelName ?? null,
+                      paymentChannelId: paymentForm.paymentChannel?.id ?? null,
+                      accountNumber: paymentForm.paymentChannel?.accountNumber ?? null,
+                      accountHolderName: paymentForm.paymentChannel?.accountHolderName ?? null,
+                    }
+                  : undefined;
+                handleOperation(confirmOperation.operationName, additionalInformation);
                 setConfirmOperation(null);
+                setPaymentForm({ referenceNo: '', paymentDate: null, paymentChannel: null });
               }
             }}
             disabled={submitting}
