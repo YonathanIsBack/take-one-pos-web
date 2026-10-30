@@ -1,7 +1,10 @@
 import ColumnType from '../constants/ColumnType';
 import { Column } from '../constants/Type';
 
-const StockPurchaseItemColumn: Column[] = [
+function getStockPurchaseItemColumns(status: string): Column[] {
+  const isCreated = status === 'CREATED';
+
+  return [
   {
     columName: 'name',
     columnType: ColumnType.TEXT,
@@ -67,10 +70,11 @@ const StockPurchaseItemColumn: Column[] = [
     flex: 1,
     option: {
       detail: true,
-      edit: true,
-      delete: true,
+      edit: isCreated,
+      delete: isCreated,
     },
   },
-];
+  ];
+}
 
-export default StockPurchaseItemColumn;
+export default getStockPurchaseItemColumns;

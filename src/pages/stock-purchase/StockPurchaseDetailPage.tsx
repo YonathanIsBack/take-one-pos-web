@@ -23,7 +23,7 @@ import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
 import { BASE_API_URL } from '../../constants/Url';
-import StockPurchaseItemColumn from '../../table-columns/StockPurchaseItemColumn';
+import getStockPurchaseItemColumns from '../../table-columns/StockPurchaseItemColumn';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 import formatToCurrency from '../../utils/formatToCurrency';
 
@@ -429,7 +429,7 @@ function StockPurchaseDetailPage() {
                 </Box>
               ) : (
                 <>
-                  {!showForm && (
+                  {!showForm && item?.status === 'CREATED' && (
                     <Box sx={{ mb: 2 }}>
                       <Button
                         variant="contained"
@@ -545,7 +545,7 @@ function StockPurchaseDetailPage() {
                   ) : (
                     <TableData<StockPurchaseItem>
                       url={`${BASE_API_URL}/stock-purchase/${id}/detail`}
-                      columns={StockPurchaseItemColumn}
+                      columns={getStockPurchaseItemColumns(item?.status ?? '')}
                       dataKey="id"
                       responseKey="stockPurchaseDetail"
                       onDetail={handleDetail}
