@@ -65,8 +65,21 @@ export interface PaymentChannel {
   rowversion: number;
 }
 
-export interface ColumnOption {
-  detail?: boolean;
+export interface SalesPayment {
+  [key: string]: unknown;
+  id: number;
+  salesId: number;
+  referenceNo: string;
+  paymentDate: string | null;
+  paymentChannel: string;
+  accountNumber: string;
+  accountHolderName: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
+export interface ColumnOption {  detail?: boolean;
   edit?: boolean;
   delete?: boolean;
 }

@@ -26,7 +26,9 @@ import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
 import Title from '../../commons/Title';
 import { API_SALES, API_ITEM, API_PAYMENT_CHANNEL, BASE_API_URL } from '../../constants/Url';
+import { SalesPayment } from '../../constants/Type';
 import getSalesItemColumns from '../../table-columns/SalesItemColumn';
+import SalesPaymentColumn from '../../table-columns/SalesPaymentColumn';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 import formatToCurrency from '../../utils/formatToCurrency';
 
@@ -423,6 +425,7 @@ function SalesDetailPage() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Items" />
+            <Tab label="Payment" />
             <Tab label="Audit Trail" />
           </Tabs>
         </Box>
@@ -618,6 +621,14 @@ function SalesDetailPage() {
             </>
           )}
           {tabValue === 1 && (
+            <TableData<SalesPayment>
+              url={`${API_SALES}/${id}/sales-payment`}
+              columns={SalesPaymentColumn}
+              dataKey="id"
+              responseKey="salesPayments"
+            />
+          )}
+          {tabValue === 2 && (
             <AuditTrailTable url={`${API_SALES}/${id}/audit-trail`} />
           )}
         </Box>
