@@ -1,6 +1,9 @@
 import {
   Box,
   CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   InputAdornment,
   Pagination,
   Skeleton,
@@ -25,15 +28,18 @@ import TableRowChecklist from './TableRowChecklist';
 import ColumnType from '../constants/ColumnType';
 import { BASE_API_URL } from '../constants/Url';
 import useDebounce from '../hooks/useDebounce';
+import AuditTrailTable from './AuditTrailTable';
 
 const PAGE_SIZE = 10;
 
-interface TableDataProps<T> {  url: string;
+interface TableDataProps<T> {
+  url: string;
   columns: Column[];
   onDetail?: (item: T) => void;
   onEdit?: (item: T) => void;
   onDelete?: (item: T) => void;
   onChecklist?: (item: T, value: number) => void;
+  auditTrailUrl?: (item: T) => string;
   dataKey: keyof T;
   disabled?: boolean;
   refreshKey?: number;
@@ -51,6 +57,7 @@ function TableData<T extends Record<string, unknown>>({
   onEdit,
   onDelete,
   onChecklist,
+  auditTrailUrl,
   dataKey,
   disabled,
   refreshKey,
@@ -61,6 +68,7 @@ function TableData<T extends Record<string, unknown>>({
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [auditTrailItem, setAuditTrailItem] = useState<T | null>(null);
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
@@ -109,6 +117,7 @@ function TableData<T extends Record<string, unknown>>({
             onDetail={() => onDetail?.(item)}
             onEdit={() => onEdit?.(item)}
             onDelete={() => onDelete?.(item)}
+            onAuditTrail={auditTrailUrl ? () => setAuditTrailItem(item) : undefined}
             alignment={alignment}
             sx={cellSx}
           />
@@ -256,6 +265,19 @@ function TableData<T extends Record<string, unknown>>({
           </TableBody>
         </Table>
       </TableContainer>
+      <Dialog
+        open={auditTrailItem !== null}
+        onClose={() => setAuditTrailItem(null)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Audit Trail</DialogTitle>
+        <DialogContent>
+          {auditTrailItem && auditTrailUrl && (
+            <AuditTrailTable url={auditTrailUrl(auditTrailItem)} />
+          )}
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }

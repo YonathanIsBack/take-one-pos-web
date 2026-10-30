@@ -4,7 +4,7 @@ import TableData from '../commons/TableData';
 import Title from '../commons/Title';
 import RoutePath from '../constants/RoutePath';
 import { User } from '../constants/Type';
-import { API_USER } from '../constants/Url';
+import { API_USER, BASE_API_URL } from '../constants/Url';
 import UserColumn from '../table-columns/UserColumns';
 
 function UserPage() {
@@ -22,6 +22,7 @@ function UserPage() {
           url={API_USER}
           columns={UserColumn}
           onDetail={handleDetail}
+          auditTrailUrl={(user) => `${BASE_API_URL}/user/${user.id}/audit-trail`}
           dataKey="id"
           responseKey="users"
         />

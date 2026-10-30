@@ -66,6 +66,7 @@ function PaymentChannelPage() {
           onDetail={handleDetail}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          auditTrailUrl={(item) => `${API_PAYMENT_CHANNEL}/${item.id}/audit-trail`}
           dataKey="id"
           disabled={loading}
           refreshKey={refreshKey}

@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import AuditTrailTable from '../../commons/AuditTrailTable';
 import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
@@ -343,6 +344,7 @@ function StockPurchaseDetailPage() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Items" />
+            <Tab label="Audit Trail" />
           </Tabs>
         </Box>
 
@@ -555,6 +557,9 @@ function StockPurchaseDetailPage() {
                 </>
               )}
             </>
+          )}
+          {tabValue === 1 && (
+            <AuditTrailTable url={`${BASE_API_URL}/stock-purchase/${id}/audit-trail`} />
           )}
         </Box>
       </Box>

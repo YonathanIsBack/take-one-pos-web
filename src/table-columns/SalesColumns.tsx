@@ -10,18 +10,18 @@ const SalesColumn: Column[] = [
     flex: 2,
   },
   {
-    columName: 'orderDate',
-    columnType: ColumnType.DATE,
-    label: 'Order Date',
-    alignment: 'Left',
-    flex: 1.5,
-  },
-  {
     columName: 'customerName',
     columnType: ColumnType.TEXT,
     label: 'Customer Name',
     alignment: 'Left',
     flex: 2,
+  },
+  {
+    columName: 'orderDate',
+    columnType: ColumnType.DATE,
+    label: 'Order Date',
+    alignment: 'Left',
+    flex: 1.5,
   },
   {
     columName: 'paymentDate',

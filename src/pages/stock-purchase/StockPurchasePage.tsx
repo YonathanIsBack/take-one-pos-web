@@ -73,6 +73,7 @@ function StockPurchasePage() {
           onDetail={handleDetail}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          auditTrailUrl={(item) => `${BASE_API_URL}/stock-purchase/${item.id}/audit-trail`}
           dataKey="id"
           disabled={loading}
           refreshKey={refreshKey}

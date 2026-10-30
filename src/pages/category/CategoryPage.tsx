@@ -7,7 +7,7 @@ import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
 import { Category } from '../../constants/Type';
-import { API_CATEGORY } from '../../constants/Url';
+import { API_CATEGORY, BASE_API_URL } from '../../constants/Url';
 import fetchWithAuth from '../../utils/fetchWithAuth';
 import CategoryColumn from '../../table-columns/CategoryColumns';
 
@@ -66,6 +66,7 @@ function CategoryPage() {
           onDetail={handleDetail}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          auditTrailUrl={(item) => `${BASE_API_URL}/category/${item.id}/audit-trail`}
           dataKey="id"
           disabled={loading}
           refreshKey={refreshKey}

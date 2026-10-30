@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import DatePickerField from '../../commons/DatePickerField';
+import AuditTrailTable from '../../commons/AuditTrailTable';
 import DialogModal from '../../commons/DialogModal';
 import TableData from '../../commons/TableData';
 import TimeInformation from '../../commons/TimeInformation';
@@ -422,6 +423,7 @@ function SalesDetailPage() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="Items" />
+            <Tab label="Audit Trail" />
           </Tabs>
         </Box>
 
@@ -614,6 +616,9 @@ function SalesDetailPage() {
                 </>
               )}
             </>
+          )}
+          {tabValue === 1 && (
+            <AuditTrailTable url={`${API_SALES}/${id}/audit-trail`} />
           )}
         </Box>
       </Box>

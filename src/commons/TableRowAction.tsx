@@ -1,6 +1,7 @@
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HistoryIcon from '@mui/icons-material/History';
 import { IconButton, SxProps, TableCell, Tooltip } from '@mui/material';
 
 interface TableRowActionProps {
@@ -10,6 +11,7 @@ interface TableRowActionProps {
   onDetail?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  onAuditTrail?: () => void;
   alignment?: 'left' | 'right' | 'center';
   sx?: SxProps;
 }
@@ -21,6 +23,7 @@ function TableRowAction({
   onDetail,
   onEdit,
   onDelete,
+  onAuditTrail,
   alignment = 'right',
   sx,
 }: TableRowActionProps) {
@@ -44,6 +47,13 @@ function TableRowAction({
         <Tooltip title="Delete">
           <IconButton size="small" onClick={onDelete} sx={{ color: 'error.main' }}>
             <DeleteIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      )}
+      {onAuditTrail && (
+        <Tooltip title="Audit Trail">
+          <IconButton size="small" onClick={onAuditTrail} sx={{ color: 'grey.600' }}>
+            <HistoryIcon fontSize="small" />
           </IconButton>
         </Tooltip>
       )}

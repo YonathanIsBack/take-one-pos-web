@@ -73,6 +73,7 @@ function ItemPage() {
           onDetail={handleDetail}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          auditTrailUrl={(item) => `${API_ITEM}/${item.id}/audit-trail`}
           dataKey="id"
           disabled={loading}
           refreshKey={refreshKey}

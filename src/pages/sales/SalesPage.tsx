@@ -7,7 +7,7 @@ import TableData from '../../commons/TableData';
 import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
 import { Sale } from '../../constants/Type';
-import { API_SALES } from '../../constants/Url';
+import { API_SALES, BASE_API_URL } from '../../constants/Url';
 import SalesColumn from '../../table-columns/SalesColumns';
 
 function SalesPage() {
@@ -46,6 +46,7 @@ function SalesPage() {
           columns={SalesColumn}
           onDetail={handleDetail}
           onEdit={handleEdit}
+          auditTrailUrl={(sale) => `${BASE_API_URL}/sales/${sale.id}/audit-trail`}
           dataKey="id"
           responseKey="sales"
         />
