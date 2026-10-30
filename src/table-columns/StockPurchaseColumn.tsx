@@ -29,11 +29,11 @@ const StockPurchaseColumn: Column[] = [
     label: 'Action',
     alignment: 'Right',
     flex: 1,
-    option: {
+    option: (stockPurchase) => ({
       detail: true,
-      edit: true,
-      delete: true,
-    },
+      edit: stockPurchase.status === 'CREATED',
+      delete: stockPurchase.status === 'CREATED',
+    }),
   },
 ];
 
