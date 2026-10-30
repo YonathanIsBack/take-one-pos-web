@@ -110,7 +110,10 @@ function SalesDetailPage() {
     paymentChannel: null as PaymentChannelOption | null,
   });
 
+  const [deliveryDate, setDeliveryDate] = useState<dayjs.Dayjs | null>(null);
+
   const isPayOperation = confirmOperation?.operationName === 'pay';
+  const isDeliverOperation = confirmOperation?.operationName === 'deliver';
 
   const totalPrice = (parseFloat(itemForm.price || '0') * parseInt(itemForm.quantity || '0')) - parseFloat(itemForm.discount || '0');
 
@@ -637,9 +640,19 @@ function SalesDetailPage() {
       <Dialog open={confirmOperation !== null} onClose={() => setConfirmOperation(null)} fullWidth maxWidth="sm">
         <DialogTitle>Confirmation</DialogTitle>
         <DialogContent>
-          <DialogContentText sx={{ mb: isPayOperation ? 2 : 0 }}>
+          <DialogContentText sx={{ mb: isPayOperation || isDeliverOperation ? 2 : 0 }}>
             Are you sure you want to {confirmOperation?.operationDisplayName}?
           </DialogContentText>
+          {isDeliverOperation && (
+            <DatePickerField
+              label="Delivery Date"
+              format="DD/MM/YYYY"
+              value={deliveryDate}
+              onChange={(newValue) => setDeliveryDate(newValue)}
+              disabled={submitting}
+              sx={{ width: '100%' }}
+            />
+          )}
           {isPayOperation && (
             <>
               <TextField
@@ -702,10 +715,13 @@ function SalesDetailPage() {
                       accountNumber: paymentForm.paymentChannel?.accountNumber ?? null,
                       accountHolderName: paymentForm.paymentChannel?.accountHolderName ?? null,
                     }
-                  : undefined;
+                  : isDeliverOperation
+                    ? { deliveryDate: deliveryDate?.toISOString() ?? null }
+                    : undefined;
                 handleOperation(confirmOperation.operationName, additionalInformation);
                 setConfirmOperation(null);
                 setPaymentForm({ referenceNo: '', paymentDate: null, paymentChannel: null });
+                setDeliveryDate(null);
               }
             }}
             disabled={submitting}
