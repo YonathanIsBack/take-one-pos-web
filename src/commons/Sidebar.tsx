@@ -68,7 +68,20 @@ function Sidebar() {
     >
       <Toolbar />
       <List
-        sx={{ flex: 1, overflow: 'auto' }}
+        sx={{
+          flex: 1,
+          overflow: 'auto',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'var(--color-secondary) transparent',
+          '&::-webkit-scrollbar': { width: 8 },
+          '&::-webkit-scrollbar-track': { bgcolor: 'transparent' },
+          '&::-webkit-scrollbar-thumb': {
+            bgcolor: 'var(--color-secondary)',
+            borderRadius: 4,
+            border: '2px solid var(--color-primary)',
+          },
+          '&::-webkit-scrollbar-thumb:hover': { bgcolor: 'var(--color-neutral-muted)' },
+        }}
         subheader={<li />}
       >
         {menuSections.map((section) => (
