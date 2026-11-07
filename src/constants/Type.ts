@@ -65,8 +65,36 @@ export interface PaymentChannel {
   rowversion: number;
 }
 
-export interface SalesPayment {
+export interface ItemAdjustment {
   [key: string]: unknown;
+  id: number;
+  adjustmentDate: string;
+  reason: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
+export interface ItemAdjustmentDetail {
+  [key: string]: unknown;
+  id: number;
+  itemAdjustmentId: number;
+  itemId: number;
+  adjustmentType: number;
+  quantity: number;
+  snapshotQuantity: number | null;
+  finalQuantity: number | null;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+  item: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface SalesPayment {  [key: string]: unknown;
   id: number;
   salesId: number;
   referenceNo: string;
@@ -92,4 +120,5 @@ export interface Column {
   option?: ColumnOption | ((item: Record<string, unknown>) => ColumnOption);
   parentKey?: string;
   flex?: number;
+  formatter?: (value: unknown) => string;
 }

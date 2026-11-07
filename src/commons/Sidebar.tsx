@@ -8,6 +8,7 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import CategoryIcon from '@mui/icons-material/Category';
 import PaymentIcon from '@mui/icons-material/Payment';
+import TuneIcon from '@mui/icons-material/Tune';
 import { Box, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import RoutePath from '../constants/RoutePath';
@@ -25,6 +26,7 @@ const menuSections = [
       { label: 'Item', path: RoutePath.ITEM, icon: <Inventory2Icon /> },
       { label: 'Category', path: RoutePath.CATEGORY, icon: <CategoryIcon /> },
       { label: 'Stock Purchase', path: RoutePath.STOCK_PURCHASE, icon: <WarehouseIcon /> },
+      { label: 'Adjustment', path: RoutePath.ITEM_ADJUSTMENT, icon: <TuneIcon /> },
     ],
   },
   {

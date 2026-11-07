@@ -24,6 +24,10 @@ const RoutePath = {
   PAYMENT_CHANNEL_NEW: '/payment-channel/form',
   PAYMENT_CHANNEL_DETAIL: (id: string | number) => `/payment-channel/${id}`,
   PAYMENT_CHANNEL_EDIT: (id: string | number) => `/payment-channel/${id}/edit`,
+  ITEM_ADJUSTMENT: '/item-adjustment',
+  ITEM_ADJUSTMENT_NEW: '/item-adjustment/form',
+  ITEM_ADJUSTMENT_DETAIL: (id: string | number) => `/item-adjustment/${id}`,
+  ITEM_ADJUSTMENT_EDIT: (id: string | number) => `/item-adjustment/${id}/edit`,
 } as const;
 
 export default RoutePath;

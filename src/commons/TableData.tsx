@@ -104,7 +104,13 @@ function TableData<T extends Record<string, unknown>>({
 
     switch (column.columnType) {
       case ColumnType.TEXT:
-        return <TableRowText value={String(value ?? '')} alignment={alignment} sx={cellSx} />;
+        return (
+          <TableRowText
+            value={column.formatter ? column.formatter(value) : String(value ?? '')}
+            alignment={alignment}
+            sx={cellSx}
+          />
+        );
       case ColumnType.DATE:
         return <TableRowDate value={String(value ?? '')} alignment={alignment} sx={cellSx} />;
       case ColumnType.ACTION: {

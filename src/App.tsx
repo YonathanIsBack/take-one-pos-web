@@ -25,6 +25,10 @@ import PaymentChannelPage from './pages/payment-channel/PaymentChannelPage';
 import PaymentChannelFormPage from './pages/payment-channel/PaymentChannelFormPage';
 import PaymentChannelDetailPage from './pages/payment-channel/PaymentChannelDetailPage';
 import PaymentChannelEditPage from './pages/payment-channel/PaymentChannelEditPage';
+import ItemAdjustmentPage from './pages/item-adjustment/ItemAdjustmentPage';
+import ItemAdjustmentFormPage from './pages/item-adjustment/ItemAdjustmentFormPage';
+import ItemAdjustmentDetailPage from './pages/item-adjustment/ItemAdjustmentDetailPage';
+import ItemAdjustmentEditPage from './pages/item-adjustment/ItemAdjustmentEditPage';
 
 function App() {
   return (
@@ -54,6 +58,10 @@ function App() {
           <Route path={RoutePath.PAYMENT_CHANNEL_NEW} element={<PaymentChannelFormPage />} />
           <Route path="/payment-channel/:id" element={<PaymentChannelDetailPage />} />
           <Route path="/payment-channel/:id/edit" element={<PaymentChannelEditPage />} />
+          <Route path={RoutePath.ITEM_ADJUSTMENT} element={<ItemAdjustmentPage />} />
+          <Route path={RoutePath.ITEM_ADJUSTMENT_NEW} element={<ItemAdjustmentFormPage />} />
+          <Route path="/item-adjustment/:id" element={<ItemAdjustmentDetailPage />} />
+          <Route path="/item-adjustment/:id/edit" element={<ItemAdjustmentEditPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
