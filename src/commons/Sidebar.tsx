@@ -9,6 +9,9 @@ import WarehouseIcon from '@mui/icons-material/Warehouse';
 import CategoryIcon from '@mui/icons-material/Category';
 import PaymentIcon from '@mui/icons-material/Payment';
 import TuneIcon from '@mui/icons-material/Tune';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import MapIcon from '@mui/icons-material/Map';
+import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import { Box, Divider, IconButton, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Toolbar } from '@mui/material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import RoutePath from '../constants/RoutePath';
@@ -18,6 +21,9 @@ const menuSections = [
     title: 'Master',
     items: [
       { label: 'Payment Channel', path: RoutePath.PAYMENT_CHANNEL, icon: <PaymentIcon /> },
+      { label: 'City', path: RoutePath.CITY, icon: <LocationCityIcon /> },
+      { label: 'District', path: RoutePath.DISTRICT, icon: <MapIcon /> },
+      { label: 'Sub District', path: RoutePath.SUB_DISTRICT, icon: <MarkunreadMailboxIcon /> },
     ],
   },
   {

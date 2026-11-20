@@ -28,6 +28,18 @@ const RoutePath = {
   ITEM_ADJUSTMENT_NEW: '/item-adjustment/form',
   ITEM_ADJUSTMENT_DETAIL: (id: string | number) => `/item-adjustment/${id}`,
   ITEM_ADJUSTMENT_EDIT: (id: string | number) => `/item-adjustment/${id}/edit`,
+  CITY: '/city',
+  CITY_NEW: '/city/form',
+  CITY_DETAIL: (id: string | number) => `/city/${id}`,
+  CITY_EDIT: (id: string | number) => `/city/${id}/edit`,
+  DISTRICT: '/district',
+  DISTRICT_NEW: '/district/form',
+  DISTRICT_DETAIL: (id: string | number) => `/district/${id}`,
+  DISTRICT_EDIT: (id: string | number) => `/district/${id}/edit`,
+  SUB_DISTRICT: '/sub-district',
+  SUB_DISTRICT_NEW: '/sub-district/form',
+  SUB_DISTRICT_DETAIL: (id: string | number) => `/sub-district/${id}`,
+  SUB_DISTRICT_EDIT: (id: string | number) => `/sub-district/${id}/edit`,
 } as const;
 
 export default RoutePath;

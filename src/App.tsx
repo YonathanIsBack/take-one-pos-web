@@ -29,6 +29,18 @@ import ItemAdjustmentPage from './pages/item-adjustment/ItemAdjustmentPage';
 import ItemAdjustmentFormPage from './pages/item-adjustment/ItemAdjustmentFormPage';
 import ItemAdjustmentDetailPage from './pages/item-adjustment/ItemAdjustmentDetailPage';
 import ItemAdjustmentEditPage from './pages/item-adjustment/ItemAdjustmentEditPage';
+import CityPage from './pages/city/CityPage';
+import CityFormPage from './pages/city/CityFormPage';
+import CityDetailPage from './pages/city/CityDetailPage';
+import CityEditPage from './pages/city/CityEditPage';
+import DistrictPage from './pages/district/DistrictPage';
+import DistrictFormPage from './pages/district/DistrictFormPage';
+import DistrictDetailPage from './pages/district/DistrictDetailPage';
+import DistrictEditPage from './pages/district/DistrictEditPage';
+import SubDistrictPage from './pages/sub-district/SubDistrictPage';
+import SubDistrictFormPage from './pages/sub-district/SubDistrictFormPage';
+import SubDistrictDetailPage from './pages/sub-district/SubDistrictDetailPage';
+import SubDistrictEditPage from './pages/sub-district/SubDistrictEditPage';
 
 function App() {
   return (
@@ -62,6 +74,18 @@ function App() {
           <Route path={RoutePath.ITEM_ADJUSTMENT_NEW} element={<ItemAdjustmentFormPage />} />
           <Route path="/item-adjustment/:id" element={<ItemAdjustmentDetailPage />} />
           <Route path="/item-adjustment/:id/edit" element={<ItemAdjustmentEditPage />} />
+          <Route path={RoutePath.CITY} element={<CityPage />} />
+          <Route path={RoutePath.CITY_NEW} element={<CityFormPage />} />
+          <Route path="/city/:id" element={<CityDetailPage />} />
+          <Route path="/city/:id/edit" element={<CityEditPage />} />
+          <Route path={RoutePath.DISTRICT} element={<DistrictPage />} />
+          <Route path={RoutePath.DISTRICT_NEW} element={<DistrictFormPage />} />
+          <Route path="/district/:id" element={<DistrictDetailPage />} />
+          <Route path="/district/:id/edit" element={<DistrictEditPage />} />
+          <Route path={RoutePath.SUB_DISTRICT} element={<SubDistrictPage />} />
+          <Route path={RoutePath.SUB_DISTRICT_NEW} element={<SubDistrictFormPage />} />
+          <Route path="/sub-district/:id" element={<SubDistrictDetailPage />} />
+          <Route path="/sub-district/:id/edit" element={<SubDistrictEditPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

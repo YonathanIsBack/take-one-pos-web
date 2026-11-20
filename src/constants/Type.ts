@@ -65,6 +65,35 @@ export interface PaymentChannel {
   rowversion: number;
 }
 
+export interface City {
+  [key: string]: unknown;
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
+export interface District {
+  [key: string]: unknown;
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
+export interface SubDistrict {
+  [key: string]: unknown;
+  id: number;
+  districtId: number;
+  postCode: string | null;
+  name: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
 export interface ItemAdjustment {
   [key: string]: unknown;
   id: number;

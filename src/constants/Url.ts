@@ -5,3 +5,6 @@ export const API_CATEGORY = `${BASE_API_URL}/category`;
 export const API_USER = `${BASE_API_URL}/user`;
 export const API_PAYMENT_CHANNEL = `${BASE_API_URL}/payment-channel`;
 export const API_ITEM_ADJUSTMENT = `${BASE_API_URL}/item-adjustment`;
+export const API_CITY = `${BASE_API_URL}/city`;
+export const API_DISTRICT = `${BASE_API_URL}/district`;
+export const API_SUB_DISTRICT = `${BASE_API_URL}/sub-district`;
