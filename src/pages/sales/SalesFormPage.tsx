@@ -1,14 +1,21 @@
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Button, CircularProgress, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, CircularProgress, TextField } from '@mui/material';
 import DatePickerField from '../../commons/DatePickerField';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DialogModal from '../../commons/DialogModal';
 import Title from '../../commons/Title';
 import RoutePath from '../../constants/RoutePath';
-import { API_SALES } from '../../constants/Url';
+import { API_CUSTOMER, API_SALES } from '../../constants/Url';
+import useDebounce from '../../hooks/useDebounce';
 import fetchWithAuth from '../../utils/fetchWithAuth';
+
+interface CustomerOption {
+  id: number;
+  fullName: string;
+  fullTextAddress: string | null;
+}
 
 function SalesFormPage() {
   const navigate = useNavigate();
@@ -21,8 +28,27 @@ function SalesFormPage() {
     customerName: '',
     address: '',
   });
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerOption | null>(null);
+  const [customerOptions, setCustomerOptions] = useState<CustomerOption[]>([]);
+  const [customerSearch, setCustomerSearch] = useState('');
+  const debouncedCustomerSearch = useDebounce(customerSearch, 500);
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState({ open: false, message: '' });
+
+  useEffect(() => {
+    if (!debouncedCustomerSearch) {
+      setCustomerOptions([]);
+      return;
+    }
+    fetchWithAuth(
+      `${API_CUSTOMER}?searchParam=${encodeURIComponent(debouncedCustomerSearch)}&limit=5`,
+    )
+      .then((response) => response.json())
+      .then((data) => setCustomerOptions(data.customers ?? []))
+      .catch((error) => {
+        console.error('Failed to search customers:', error);
+      });
+  }, [debouncedCustomerSearch]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,6 +62,7 @@ function SalesFormPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderDate: form.orderDate?.toISOString(),
+          customerId: selectedCustomer?.id ?? null,
           customerName: form.customerName,
           address: form.address,
         }),
@@ -86,13 +113,36 @@ function SalesFormPage() {
           disabled={loading}
           sx={{ mb: 2, width: '100%' }}
         />
+        <Autocomplete
+          options={customerOptions}
+          getOptionLabel={(option) => option.fullName}
+          filterOptions={(options) => options}
+          value={selectedCustomer}
+          inputValue={customerSearch}
+          onInputChange={(_event, newInputValue) => setCustomerSearch(newInputValue)}
+          onChange={(_event, newValue) => {
+            setSelectedCustomer(newValue);
+            if (newValue) {
+              setForm({
+                ...form,
+                customerName: newValue.fullName,
+                address: newValue.fullTextAddress ?? '',
+              });
+            }
+          }}
+          disabled={loading}
+          sx={{ mb: 2 }}
+          renderInput={(params) => (
+            <TextField {...params} label="Search Customer" placeholder="Type to search" />
+          )}
+        />
         <TextField
           fullWidth
           label="Customer Name"
           name="customerName"
           value={form.customerName}
           onChange={handleTextChange}
-          disabled={loading}
+          disabled={loading || selectedCustomer !== null}
           sx={{ mb: 2 }}
         />
         <TextField
@@ -101,7 +151,7 @@ function SalesFormPage() {
           name="address"
           value={form.address}
           onChange={handleTextChange}
-          disabled={loading}
+          disabled={loading || selectedCustomer !== null}
           multiline
           rows={3}
           sx={{ mb: 2 }}
