@@ -65,6 +65,24 @@ export interface PaymentChannel {
   rowversion: number;
 }
 
+export interface Customer {
+  [key: string]: unknown;
+  id: number;
+  firstName: string;
+  middleName: string | null;
+  lastName: string | null;
+  phoneNumber: string | null;
+  email: string | null;
+  fullTextAddress: string | null;
+  cityId: number | null;
+  districtId: number | null;
+  subDistrictId: number | null;
+  fullName: string;
+  createdAt: string;
+  updatedAt: string | null;
+  rowversion: number;
+}
+
 export interface City {
   [key: string]: unknown;
   id: number;

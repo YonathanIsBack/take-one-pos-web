@@ -41,6 +41,10 @@ import SubDistrictPage from './pages/sub-district/SubDistrictPage';
 import SubDistrictFormPage from './pages/sub-district/SubDistrictFormPage';
 import SubDistrictDetailPage from './pages/sub-district/SubDistrictDetailPage';
 import SubDistrictEditPage from './pages/sub-district/SubDistrictEditPage';
+import CustomerPage from './pages/customer/CustomerPage';
+import CustomerFormPage from './pages/customer/CustomerFormPage';
+import CustomerDetailPage from './pages/customer/CustomerDetailPage';
+import CustomerEditPage from './pages/customer/CustomerEditPage';
 
 function App() {
   return (
@@ -86,6 +90,10 @@ function App() {
           <Route path={RoutePath.SUB_DISTRICT_NEW} element={<SubDistrictFormPage />} />
           <Route path="/sub-district/:id" element={<SubDistrictDetailPage />} />
           <Route path="/sub-district/:id/edit" element={<SubDistrictEditPage />} />
+          <Route path={RoutePath.CUSTOMER} element={<CustomerPage />} />
+          <Route path={RoutePath.CUSTOMER_NEW} element={<CustomerFormPage />} />
+          <Route path="/customer/:id" element={<CustomerDetailPage />} />
+          <Route path="/customer/:id/edit" element={<CustomerEditPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

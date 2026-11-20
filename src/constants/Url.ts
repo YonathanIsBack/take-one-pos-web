@@ -8,3 +8,4 @@ export const API_ITEM_ADJUSTMENT = `${BASE_API_URL}/item-adjustment`;
 export const API_CITY = `${BASE_API_URL}/city`;
 export const API_DISTRICT = `${BASE_API_URL}/district`;
 export const API_SUB_DISTRICT = `${BASE_API_URL}/sub-district`;
+export const API_CUSTOMER = `${BASE_API_URL}/customer`;

@@ -40,6 +40,10 @@ const RoutePath = {
   SUB_DISTRICT_NEW: '/sub-district/form',
   SUB_DISTRICT_DETAIL: (id: string | number) => `/sub-district/${id}`,
   SUB_DISTRICT_EDIT: (id: string | number) => `/sub-district/${id}/edit`,
+  CUSTOMER: '/customer',
+  CUSTOMER_NEW: '/customer/form',
+  CUSTOMER_DETAIL: (id: string | number) => `/customer/${id}`,
+  CUSTOMER_EDIT: (id: string | number) => `/customer/${id}/edit`,
 } as const;
 
 export default RoutePath;
